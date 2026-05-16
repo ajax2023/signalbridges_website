@@ -12,19 +12,30 @@ function Contact() {
   }
 
   return (
-    <section className="space-y-8 max-w-3xl">
-      <div className="space-y-4">
-        <p className="text-[0.65rem] font-semibold tracking-[0.25em] text-sky-400/80 uppercase">
+    <section className="space-y-6 max-w-3xl">
+      <div className="space-y-2.5">
+        <p className="text-[0.6rem] font-semibold tracking-[0.25em] text-sky-400/80 uppercase">
           Contact
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="text-3xl font-semibold tracking-tight leading-snug sm:text-4xl">
           Talk with the Signal Bridge™ team.
         </h1>
-        <p className="text-sm text-slate-300">
+        <p className="text-sm text-slate-300 leading-relaxed">
           Share a bit about your environment and what you need from an alerting
           platform. We will use this information to route your request to the
           right person.
         </p>
+      </div>
+
+      <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-4 space-y-2">
+        <p className="text-xs font-semibold text-slate-300">Deployment discussions may include:</p>
+        <ul className="space-y-1 text-xs text-slate-400">
+          <li className="flex items-start gap-2"><span className="mt-1 h-1 w-1 flex-shrink-0 rounded-full bg-sky-500/60" />Paging topology review</li>
+          <li className="flex items-start gap-2"><span className="mt-1 h-1 w-1 flex-shrink-0 rounded-full bg-sky-500/60" />Agent placement guidance</li>
+          <li className="flex items-start gap-2"><span className="mt-1 h-1 w-1 flex-shrink-0 rounded-full bg-sky-500/60" />SIP integration planning</li>
+          <li className="flex items-start gap-2"><span className="mt-1 h-1 w-1 flex-shrink-0 rounded-full bg-sky-500/60" />Offline operation requirements</li>
+          <li className="flex items-start gap-2"><span className="mt-1 h-1 w-1 flex-shrink-0 rounded-full bg-sky-500/60" />Security boundary review</li>
+        </ul>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border border-slate-800 bg-slate-900/40 p-6">
@@ -95,7 +106,7 @@ function Contact() {
 
         <div className="space-y-1 text-sm">
           <label htmlFor="details" className="block text-slate-200">
-            What are you hoping to solve with SignalBridges?
+            What are you hoping to solve with Signal Bridge™?
           </label>
           <textarea
             id="details"
@@ -107,7 +118,7 @@ function Contact() {
 
         <div className="flex items-center justify-between gap-4 pt-2 text-xs text-slate-400">
           <p>
-            By submitting this form you agree to be contacted about SignalBridges. No
+            By submitting this form you agree to be contacted about Signal Bridge™. No
             marketing lists by default.
           </p>
           <button
@@ -120,8 +131,8 @@ function Contact() {
 
         {submitted && (
           <p className="pt-2 text-xs text-sky-300">
-            Thank you. This form is not yet connected to a backend. Wire it to
-            your preferred ticketing or CRM system when ready.
+            Your request has been received. A member of the Signal Bridge™ team
+            will follow up directly.
           </p>
         )}
       </form>

@@ -80,7 +80,7 @@ function Layout({ children }) {
         </nav>
       )}
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">{children}</div>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8">{children}</div>
       </main>
       <footer className="border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-4">

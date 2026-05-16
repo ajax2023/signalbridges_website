@@ -17,6 +17,7 @@ logs/
 
 # Env files (do not commit secrets)
 .env
+.env.local
 .env.*.local
 
 # Build artifacts

@@ -137,8 +137,25 @@ function Downloads() {
         if (res.status === 401) throw new Error('not_authenticated');
         if (res.status === 403) throw new Error('not_authorized');
         if (!res.ok) throw new Error('server_error');
-        const data = await res.json();
-        if (!cancelled) setReleases(data.releases ?? []);
+        const response = await res.json();
+        if (!cancelled) {
+          // Backend returns { success: true, data: { console: {...}, runtime: {...} } }
+          const releaseData = response.data || {};
+          const releasesArray = Object.entries(releaseData).map(([type, info]) => ({
+            type,
+            platform: 'windows',
+            displayName: type === 'console' ? 'Signal Bridge Console' : 'Signal Bridge Edge Agent',
+            description: type === 'console'
+              ? 'Electron-based operator console for dispatch, paging, alert routing, and operational workflows.'
+              : 'On-premise execution agent for RTP paging, local device operations, and offline-capable workflows.',
+            version: info.version,
+            sha256: info.sha256,
+            sizeBytes: info.sizeBytes,
+            releaseDate: info.releaseDate,
+            filename: info.filename,
+          }));
+          setReleases(releasesArray);
+        }
       } catch (err) {
         if (!cancelled) setReleasesError(err.message);
       } finally {
@@ -183,8 +200,25 @@ function Downloads() {
       if (res.status === 403) throw new Error('not_authorized');
       if (res.status === 404) throw new Error('not_available');
       if (!res.ok) throw new Error('server_error');
-      const { downloadUrl } = await res.json();
-      window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+      const body = await res.json();
+      // Support multiple response shapes from backend
+      const url =
+        body.downloadUrl ||
+        body.download_url ||
+        body.url ||
+        body.data?.url ||
+        body.data?.downloadUrl ||
+        body.data?.download_url;
+      if (!url) {
+        console.error('[Downloads] Unrecognized response shape:', body);
+        throw new Error('server_error');
+      }
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = release.filename || '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (err) {
       setDownloadError(err.message);
     } finally {

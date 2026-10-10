@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import brandLogo from '../assets/signal-bridge-console.png';
 
 const navItems = [
   { to: '/', label: 'Overview' },
@@ -83,9 +84,13 @@ function Layout({ children }) {
       <header className={headerClass}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-md bg-sky-500 flex items-center justify-center text-xs font-semibold tracking-tight text-white">
-              SB
-            </div>
+            <img
+              src={brandLogo}
+              alt="Signal Bridge"
+              className="h-9 w-9 rounded-md object-contain bg-black"
+              width={36}
+              height={36}
+            />
             <div>
               <div className={brandClass}>Signal Bridge™</div>
               <div className={taglineClass}>

@@ -1,0 +1,99 @@
+/* Scoped to .sb-experience — Phase 1 interactive demo */
+
+.sb-experience {
+  --sb-exp-bg: #020617; /* slate-950 */
+  --sb-exp-panel: #0f172a; /* slate-900 */
+  --sb-exp-border: rgba(148, 163, 184, 0.18);
+  color: #e2e8f0;
+  background-color: var(--sb-exp-bg);
+}
+
+.sb-experience__panel {
+  background: var(--sb-exp-panel);
+  border: 1px solid var(--sb-exp-border);
+}
+
+.sb-experience__pulse {
+  animation: sb-exp-pulse 1.6s ease-in-out infinite;
+}
+
+.sb-experience__ingress {
+  animation: sb-exp-ingress 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sb-experience__step-active {
+  animation: sb-exp-step-in 0.35s ease-out both;
+}
+
+.sb-experience__action-pop {
+  animation: sb-exp-action-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sb-experience__flow-line {
+  transform-origin: top center;
+  animation: sb-exp-line 0.55s ease-out both;
+}
+
+@keyframes sb-exp-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes sb-exp-ingress {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sb-exp-step-in {
+  from {
+    transform: scale(0.92);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes sb-exp-action-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sb-exp-line {
+  from {
+    transform: scaleY(0);
+    opacity: 0.25;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-experience__pulse,
+  .sb-experience__ingress,
+  .sb-experience__step-active,
+  .sb-experience__action-pop,
+  .sb-experience__flow-line {
+    animation: none !important;
+  }
+}

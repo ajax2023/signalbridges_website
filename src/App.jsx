@@ -7,6 +7,7 @@ import SecurityPage from './pages/Security';
 import DownloadsPage from './pages/Downloads';
 import ContactPage from './pages/Contact';
 import HelpRedirect from './pages/HelpRedirect';
+import ExperiencePage from './pages/Experience';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/security" element={<SecurityPage />} />
         <Route path="/downloads" element={<DownloadsPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/experience" element={<ExperiencePage />} />
         <Route path="/help" element={<HelpRedirect />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

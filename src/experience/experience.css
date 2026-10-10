@@ -1,11 +1,31 @@
-/* Scoped to .sb-experience — Phase 1 interactive demo */
+/* Scoped to .sb-experience — Phase 2 interactive demo */
 
 .sb-experience {
-  --sb-exp-bg: #020617; /* slate-950 */
-  --sb-exp-panel: #0f172a; /* slate-900 */
+  --sb-exp-bg: #020617;
+  --sb-exp-panel: rgba(15, 23, 42, 0.92);
   --sb-exp-border: rgba(148, 163, 184, 0.18);
   color: #e2e8f0;
   background-color: var(--sb-exp-bg);
+}
+
+.sb-experience--explore {
+  background-color: #020617;
+  background-image: radial-gradient(ellipse 80% 50% at 10% 0%, rgba(14, 165, 233, 0.14), transparent 55%);
+}
+
+.sb-experience--education {
+  background-color: #020617;
+  background-image: radial-gradient(ellipse 80% 50% at 90% 0%, rgba(56, 189, 248, 0.12), transparent 55%);
+}
+
+.sb-experience--business {
+  background-color: #020617;
+  background-image: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(245, 158, 11, 0.1), transparent 55%);
+}
+
+.sb-experience--sensors {
+  background-color: #020617;
+  background-image: radial-gradient(ellipse 80% 50% at 20% 0%, rgba(34, 211, 238, 0.12), transparent 55%);
 }
 
 .sb-experience__panel {
@@ -18,7 +38,7 @@
 }
 
 .sb-experience__ingress {
-  animation: sb-exp-ingress 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: sb-exp-ingress 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .sb-experience__step-active {
@@ -26,18 +46,18 @@
 }
 
 .sb-experience__action-pop {
-  animation: sb-exp-action-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: sb-exp-action-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .sb-experience__flow-line {
   transform-origin: top center;
-  animation: sb-exp-line 0.55s ease-out both;
+  animation: sb-exp-line 0.5s ease-out both;
 }
 
 @keyframes sb-exp-pulse {
   0%,
   100% {
-    opacity: 0.7;
+    opacity: 0.75;
     transform: scale(1);
   }
   50% {
@@ -49,7 +69,7 @@
 @keyframes sb-exp-ingress {
   from {
     opacity: 0;
-    transform: translateX(-14px);
+    transform: translateX(-12px);
   }
   to {
     opacity: 1;
@@ -95,5 +115,12 @@
   .sb-experience__action-pop,
   .sb-experience__flow-line {
     animation: none !important;
+  }
+
+  .sb-experience--explore,
+  .sb-experience--education,
+  .sb-experience--business,
+  .sb-experience--sensors {
+    background-image: none;
   }
 }

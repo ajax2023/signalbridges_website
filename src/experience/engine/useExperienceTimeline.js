@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { buildSchedule } from './schedulePlan';
 
 function prefersReducedMotion() {
   if (typeof window === 'undefined' || !window.matchMedia) return false;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-const IDLE = {
+export const IDLE_STATE = {
   status: 'idle',
   eventId: null,
   activeStepIndex: -1,
@@ -16,11 +17,11 @@ const IDLE = {
 };
 
 /**
- * Deterministic, replayable timeline for a scenario event.
- * No network side effects — simulation only.
+ * Deterministic, cancellable timeline for a scenario event.
+ * Simulation only — no network side effects.
  */
 export function useExperienceTimeline() {
-  const [state, setState] = useState(IDLE);
+  const [state, setState] = useState(IDLE_STATE);
   const timersRef = useRef([]);
   const runIdRef = useRef(0);
 
@@ -29,17 +30,15 @@ export function useExperienceTimeline() {
     timersRef.current = [];
   }, []);
 
-  const reset = useCallback(() => {
+  const cancel = useCallback(() => {
     clearTimers();
     runIdRef.current += 1;
-    setState({ ...IDLE, runId: runIdRef.current });
   }, [clearTimers]);
 
-  const schedule = useCallback((fn, ms) => {
-    const id = window.setTimeout(fn, ms);
-    timersRef.current.push(id);
-    return id;
-  }, []);
+  const reset = useCallback(() => {
+    cancel();
+    setState({ ...IDLE_STATE, runId: runIdRef.current });
+  }, [cancel]);
 
   const play = useCallback(
     (event) => {
@@ -48,9 +47,7 @@ export function useExperienceTimeline() {
       runIdRef.current += 1;
       const runId = runIdRef.current;
       const reduced = prefersReducedMotion();
-      const stepMs = reduced ? 0 : event.timings?.stepMs ?? 700;
-      const actionStaggerMs = reduced ? 0 : event.timings?.actionStaggerMs ?? 400;
-      const completeHoldMs = reduced ? 0 : event.timings?.completeHoldMs ?? 200;
+      const schedule = buildSchedule(event, { reducedMotion: reduced });
 
       setState({
         status: 'running',
@@ -62,63 +59,61 @@ export function useExperienceTimeline() {
         runId,
       });
 
-      let cursor = reduced ? 40 : 180;
-
-      event.flowSteps.forEach((step, index) => {
-        const at = cursor;
-        schedule(() => {
+      schedule.forEach((item) => {
+        const timerId = window.setTimeout(() => {
           if (runIdRef.current !== runId) return;
-          setState((prev) => ({
-            ...prev,
-            status: 'running',
-            activeStepIndex: index,
-            completedStepIds:
-              index === 0
-                ? prev.completedStepIds
-                : Array.from(new Set([...prev.completedStepIds, event.flowSteps[index - 1].id])),
-          }));
-        }, at);
-        cursor += stepMs;
 
-        // When dispatch step becomes active, stagger actions
-        if (step.id === 'dispatch') {
-          event.actions.forEach((action, actionIndex) => {
-            const actionAt = at + (reduced ? 0 : 120) + actionIndex * actionStaggerMs;
-            schedule(() => {
-              if (runIdRef.current !== runId) return;
-              setState((prev) => ({
+          if (item.kind === 'step') {
+            const { index } = item.payload;
+            setState((prev) => {
+              const priorId = index > 0 ? event.flowSteps[index - 1]?.id : null;
+              const completed =
+                priorId == null
+                  ? prev.completedStepIds
+                  : Array.from(new Set([...prev.completedStepIds, priorId]));
+              return {
                 ...prev,
-                activeActionIds: Array.from(new Set([...prev.activeActionIds, action.id])),
-              }));
-            }, actionAt);
-            schedule(() => {
-              if (runIdRef.current !== runId) return;
-              setState((prev) => ({
-                ...prev,
-                completedActionIds: Array.from(new Set([...prev.completedActionIds, action.id])),
-              }));
-            }, actionAt + (reduced ? 0 : Math.max(220, actionStaggerMs * 0.75)));
-          });
-          cursor = Math.max(
-            cursor,
-            at + (reduced ? 0 : 120) + event.actions.length * actionStaggerMs + 280,
-          );
-        }
+                status: 'running',
+                eventId: event.id,
+                activeStepIndex: index,
+                completedStepIds: completed,
+              };
+            });
+          }
+
+          if (item.kind === 'action-active') {
+            setState((prev) => ({
+              ...prev,
+              activeActionIds: Array.from(
+                new Set([...prev.activeActionIds, item.payload.actionId]),
+              ),
+            }));
+          }
+
+          if (item.kind === 'action-complete') {
+            setState((prev) => ({
+              ...prev,
+              completedActionIds: Array.from(
+                new Set([...prev.completedActionIds, item.payload.actionId]),
+              ),
+            }));
+          }
+
+          if (item.kind === 'complete') {
+            setState((prev) => ({
+              ...prev,
+              status: 'complete',
+              activeStepIndex: item.payload.lastStepIndex,
+              completedStepIds: item.payload.stepIds,
+              activeActionIds: item.payload.actionIds,
+              completedActionIds: item.payload.actionIds,
+            }));
+          }
+        }, item.at);
+        timersRef.current.push(timerId);
       });
-
-      schedule(() => {
-        if (runIdRef.current !== runId) return;
-        setState((prev) => ({
-          ...prev,
-          status: 'complete',
-          activeStepIndex: event.flowSteps.length - 1,
-          completedStepIds: event.flowSteps.map((s) => s.id),
-          activeActionIds: event.actions.map((a) => a.id),
-          completedActionIds: event.actions.map((a) => a.id),
-        }));
-      }, cursor + completeHoldMs);
     },
-    [clearTimers, schedule],
+    [clearTimers],
   );
 
   const replay = useCallback(
@@ -131,5 +126,5 @@ export function useExperienceTimeline() {
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
-  return { state, play, replay, reset };
+  return { state, play, replay, reset, cancel };
 }

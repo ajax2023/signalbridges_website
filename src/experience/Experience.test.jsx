@@ -173,7 +173,7 @@ describe('experience learning page', () => {
     const stage = document.querySelector('[aria-busy]');
     expect(stage.className).toContain('grid-cols-1');
     expect(stage.className).toContain('lg:grid-cols-3');
-    expect(document.querySelector('.sb-learn').className).toContain('overflow-x-hidden');
+    expect(document.querySelector('.sb-learn').className).toContain('overflow-hidden');
   });
 
   it('keeps sound off until the visitor turns it on', () => {

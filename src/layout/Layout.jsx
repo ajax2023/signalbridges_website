@@ -19,7 +19,7 @@ function Layout({ children }) {
   const isExperience = pathname === '/experience';
 
   const shellClass = isExperience
-    ? 'min-h-screen flex flex-col bg-[#f4f7fb] text-slate-900'
+    ? 'flex h-dvh flex-col overflow-hidden bg-[#f4f7fb] text-slate-900'
     : 'min-h-screen flex flex-col bg-white text-slate-900';
 
   const headerClass = 'border-b border-slate-200 bg-white';
@@ -111,10 +111,10 @@ function Layout({ children }) {
           </div>
         </nav>
       )}
-      <main className="flex-1">
+      <main className={isExperience ? 'flex min-h-0 flex-1 flex-col' : 'flex-1'}>
         <div
           className={
-            isExperience ? 'w-full' : 'mx-auto max-w-7xl px-4 sm:px-6 py-10'
+            isExperience ? 'min-h-0 w-full flex-1' : 'mx-auto max-w-7xl px-4 sm:px-6 py-10'
           }
         >
           {children}

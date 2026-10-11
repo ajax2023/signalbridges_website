@@ -22,9 +22,10 @@ function LearningSidebar({ activeId, progress, open, onSelect, onClose }) {
       <nav
         aria-label="Learning modules"
         className={[
-          'z-40 w-[17.75rem] shrink-0 flex-col bg-[#0b2340] text-white',
-          'fixed inset-y-0 left-0 xl:sticky xl:top-[4.25rem] xl:h-[calc(100vh-4.25rem)]',
-          open ? 'flex' : 'hidden xl:flex',
+          'z-40 w-[17.75rem] shrink-0 bg-[#0b2340] text-white',
+          open
+            ? 'fixed inset-y-0 left-0 flex flex-col'
+            : 'hidden h-full min-h-0 flex-col xl:flex',
         ].join(' ')}
       >
         <div className="flex items-center justify-between px-4 py-3 xl:hidden">

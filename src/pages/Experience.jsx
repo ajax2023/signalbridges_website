@@ -119,7 +119,7 @@ function Experience() {
         : 'Ready. Select an event.';
 
   return (
-    <div className="sb-learn flex min-h-[calc(100vh-4.25rem)] overflow-x-hidden bg-[#f4f7fb] text-slate-900">
+    <div className="sb-learn flex h-full min-h-0 overflow-hidden bg-[#f4f7fb] text-slate-900">
       <LearningSidebar
         activeId={module.id}
         progress={progress}
@@ -131,7 +131,7 @@ function Experience() {
         }}
       />
 
-      <div className="min-w-0 flex-1">
+      <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">
         <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
           <button
             type="button"

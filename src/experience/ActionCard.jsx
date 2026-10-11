@@ -9,6 +9,7 @@ const STATUS = {
   display: { active: 'Updating', done: 'Updated' },
   paging: { active: 'Paging', done: 'Played' },
   device: { active: 'Sending', done: 'Acknowledged' },
+  notification: { active: 'Showing', done: 'Showing' },
 };
 
 function ActionCard({ action, active, done }) {

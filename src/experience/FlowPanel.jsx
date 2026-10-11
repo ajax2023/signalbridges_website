@@ -1,8 +1,8 @@
 import brandLogo from '../assets/signal-bridge-console.png';
 import { bridgeView } from './learning/bridgeView';
 
-function FlowPanel({ event, timeline }) {
-  const steps = bridgeView(event, timeline);
+function FlowPanel({ event, timeline, omitFlow = false }) {
+  const steps = bridgeView(event, timeline, { omitFlow });
   const live = timeline.status === 'running' || timeline.status === 'complete';
 
   return (

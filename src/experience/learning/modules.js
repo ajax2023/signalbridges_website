@@ -69,10 +69,9 @@ export const LEARNING_MODULES = [
     name: 'Buttons & Actions',
     description: 'Simple events. Real results.',
     title: 'Buttons & Actions',
-    lede: 'Press a button and watch Signal Bridge make the right things happen.',
-    body: 'A button can trigger a single action or a complete workflow — like calling staff, sending a notification and activating devices.',
-    takeaway:
-      'An event can be a simple button press, but it can trigger multiple communications and device actions.',
+    lede: 'Press a button and watch the one action it starts.',
+    body: 'Call for help, message someone, email someone, or notify someone. Each button does one thing. Flows come in a later module.',
+    takeaway: '',
     kind: 'buttons',
     simulated: false,
   },

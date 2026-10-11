@@ -15,20 +15,6 @@ import {
 import { useLearningProgress } from '../experience/learning/progress';
 import '../experience/experience.css';
 
-function Lightbulb() {
-  return (
-    <svg viewBox="0 0 32 32" className="h-5 w-5 text-amber-400" aria-hidden="true">
-      <path
-        d="M16 4a8 8 0 0 0-4 14.9V22h8v-3.1A8 8 0 0 0 16 4z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path d="M13 25h6M14 28h4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function Experience() {
   const [moduleId, setModuleId] = useState('A');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -126,7 +112,7 @@ function Experience() {
       />
 
       <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+        <div className="flex w-full flex-col gap-5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
           <button
             type="button"
             className="inline-flex w-fit items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 xl:hidden"
@@ -135,8 +121,8 @@ function Experience() {
             Open learning modules
           </button>
 
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-            <div className="max-w-3xl">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="max-w-4xl">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-blue-500 text-lg font-bold text-blue-600">
                   {module.id}
@@ -144,25 +130,15 @@ function Experience() {
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{module.title}</h1>
               </div>
               <p className="mt-3 text-base text-slate-600">{module.lede}</p>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">{module.body}</p>
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-500">{module.body}</p>
               {module.simulated && (
-                <p className="mt-3 inline-flex max-w-2xl rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold leading-relaxed text-amber-800">
+                <p className="mt-3 inline-flex max-w-3xl rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold leading-relaxed text-amber-800">
                   Simulation — {module.simulationNote}
                 </p>
               )}
             </div>
 
-            <aside className="w-full rounded-3xl border border-slate-200 bg-white p-4 shadow-sm xl:max-w-sm">
-              <div className="flex items-center gap-2">
-                <Lightbulb />
-                <h2 className="text-sm font-semibold text-slate-900">Key Takeaway</h2>
-              </div>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{module.takeaway}</p>
-            </aside>
-          </div>
-
-          {module.kind === 'buttons' && (
-            <div className="flex justify-end">
+            {module.kind === 'buttons' && (
               <button
                 type="button"
                 onClick={handleReset}
@@ -171,37 +147,52 @@ function Experience() {
               >
                 Reset
               </button>
-            </div>
-          )}
+            )}
+          </div>
 
-          <div
-            className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3 [&>*]:min-w-0"
-            aria-busy={running}
-          >
-            {module.kind === 'composer' ? (
-              <FlowComposer
-                triggerId={triggerId}
-                actionTypes={actionTypes}
-                running={running}
-                onTrigger={(next) => {
-                  setTriggerId(next);
-                  setComposerEvent(null);
-                  reset();
-                }}
-                onToggleAction={handleToggleAction}
-                onRun={handleRunFlow}
-              />
-            ) : (
+          <div className="flex flex-col gap-4" aria-busy={running}>
+            {module.kind === 'buttons' ? (
               <EventsPanel
                 events={catalogEvents}
+                variant="tiles"
                 selectedEventId={state.eventId}
                 running={running}
                 completedEventIds={completedEventIds}
                 onSelect={handleSelect}
               />
-            )}
-            <FlowPanel event={selectedEvent} timeline={state} />
-            <ActionsPanel event={selectedEvent} timeline={state} />
+            ) : null}
+            <div
+              className={
+                module.kind === 'buttons'
+                  ? 'grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2 [&>*]:min-w-0'
+                  : 'grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3 [&>*]:min-w-0'
+              }
+            >
+              {module.kind === 'composer' ? (
+                <FlowComposer
+                  triggerId={triggerId}
+                  actionTypes={actionTypes}
+                  running={running}
+                  onTrigger={(next) => {
+                    setTriggerId(next);
+                    setComposerEvent(null);
+                    reset();
+                  }}
+                  onToggleAction={handleToggleAction}
+                  onRun={handleRunFlow}
+                />
+              ) : module.kind === 'buttons' ? null : (
+                <EventsPanel
+                  events={catalogEvents}
+                  selectedEventId={state.eventId}
+                  running={running}
+                  completedEventIds={completedEventIds}
+                  onSelect={handleSelect}
+                />
+              )}
+              <FlowPanel event={selectedEvent} timeline={state} omitFlow={module.kind === 'buttons'} />
+              <ActionsPanel event={selectedEvent} timeline={state} />
+            </div>
           </div>
 
           {module.kind !== 'buttons' && (

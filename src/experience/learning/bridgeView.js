@@ -1,6 +1,6 @@
 /** Presentation timeline derived from the execution engine state. */
 
-export function bridgeView(event, timeline) {
+export function bridgeView(event, timeline, { omitFlow = false } = {}) {
   const status = timeline?.status || 'idle';
   const idx = timeline?.activeStepIndex ?? -1;
   const actionCount = event?.actions?.length || 0;
@@ -21,8 +21,9 @@ export function bridgeView(event, timeline) {
   else if (hasEvent && (actionsStarted || idx >= 3)) executing = 'active';
 
   const actionWord = `Running ${actionCount} action${actionCount === 1 ? '' : 's'}`;
+  const singleAction = event?.actions?.length === 1 ? event.actions[0].label : null;
 
-  return [
+  const steps = [
     {
       id: 'received',
       label: 'Event received',
@@ -37,15 +38,19 @@ export function bridgeView(event, timeline) {
     },
     {
       id: 'executing',
-      label: 'Actions executing',
-      detail: executing === 'idle' ? 'Waiting' : 'Calling, notifying, activating devices',
+      label: singleAction ? 'Action running' : 'Actions executing',
+      detail: executing === 'idle' ? 'Waiting' : singleAction || 'Calling, notifying, activating devices',
       state: executing,
     },
     {
       id: 'completed',
       label: 'Completed',
-      detail: complete ? 'Simulated actions finished' : 'Waiting',
+      detail: complete
+        ? `Simulated action${actionCount === 1 ? '' : 's'} finished`
+        : 'Waiting',
       state: complete ? 'done' : 'idle',
     },
   ];
+
+  return omitFlow ? steps.filter((step) => step.id !== 'flow') : steps;
 }

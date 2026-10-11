@@ -41,11 +41,19 @@ describe('learning modules', () => {
     expect(blob).not.toMatch(/Ring sensor|Amazon Ring/i);
   });
 
-  it('gives each button scenario a different action set', () => {
-    const types = (id) => buildButtonEvents(id).find((event) => event.id === 'emergency').actions.map((action) => action.type);
-    expect(types('basic-alert')).toEqual(['phone', 'strobe']);
-    expect(types('multi-channel')).toEqual(['phone', 'sms', 'display']);
-    expect(types('paging')).toEqual(['paging']);
-    expect(types('custom-flow')).toEqual(['phone', 'sms', 'email', 'strobe', 'display', 'paging']);
+  it('gives each demo button a single action', () => {
+    const events = buildButtonEvents();
+    expect(events.map((event) => event.id)).toEqual([
+      'call-help',
+      'message-someone',
+      'email-someone',
+      'notify-someone',
+    ]);
+    expect(events.map((event) => event.actions.map((action) => action.type))).toEqual([
+      ['phone'],
+      ['sms'],
+      ['email'],
+      ['notification'],
+    ]);
   });
 });

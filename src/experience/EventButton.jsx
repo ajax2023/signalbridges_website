@@ -1,4 +1,5 @@
 import { ExperienceIcon } from './icons';
+import { experienceIconSrc } from './experienceIcons';
 
 function PhysicalFace({ tone }) {
   const toneClass =
@@ -27,9 +28,58 @@ function PhysicalFace({ tone }) {
   );
 }
 
-function EventButton({ event, selected, running, completed, onSelect }) {
-  const physical = Boolean(event.tone);
+function TileGlyph({ event }) {
+  const src = experienceIconSrc(event.iconFile);
+  if (src) {
+    return <img src={src} alt="" className="h-16 w-16 object-contain sm:h-20 sm:w-20" />;
+  }
+  const tone = event.tone;
+  const bubble =
+    tone === 'green'
+      ? 'from-emerald-300 to-emerald-500'
+      : tone === 'amber'
+        ? 'from-sky-300 to-blue-500'
+        : tone === 'sky'
+          ? 'from-sky-300 to-blue-500'
+          : 'from-sky-300 to-blue-600';
+  return (
+    <span className={['flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-b text-white shadow-md sm:h-20 sm:w-20', bubble].join(' ')} aria-hidden="true">
+      <ExperienceIcon name={event.icon === 'notification' ? 'announcement' : event.icon} className="h-9 w-9 sm:h-11 sm:w-11" />
+    </span>
+  );
+}
+
+function EventButton({ event, selected, running, completed, onSelect, variant = 'row' }) {
+  const physical = Boolean(event.tone) && variant !== 'tile';
   const stateLabel = running && selected ? 'Running' : completed ? 'Completed' : selected ? 'Selected' : '';
+
+  if (variant === 'tile') {
+    return (
+      <button
+        type="button"
+        onClick={() => onSelect(event.id)}
+        disabled={running}
+        aria-pressed={selected}
+        className={[
+          'relative flex min-h-[9.5rem] flex-col items-center justify-center gap-3 rounded-3xl border bg-white/80 px-3 py-5 text-center shadow-sm transition-colors sm:min-h-[11rem]',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+          selected ? 'border-blue-500 ring-2 ring-blue-500/25' : 'border-slate-200/80 hover:border-slate-300 hover:bg-white',
+          running && !selected ? 'opacity-50' : '',
+        ].join(' ')}
+      >
+        <span className={running && selected ? 'sb-experience__pulse rounded-2xl' : ''}>
+          <TileGlyph event={event} />
+        </span>
+        <span className="text-sm font-medium text-slate-700">{event.label}</span>
+        {completed && (
+          <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[0.65rem] font-bold text-white">
+            ✓
+          </span>
+        )}
+        {stateLabel && <span className="sr-only">{stateLabel}</span>}
+      </button>
+    );
+  }
 
   return (
     <button

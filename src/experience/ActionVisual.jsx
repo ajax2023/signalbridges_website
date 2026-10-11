@@ -78,7 +78,18 @@ function DeviceArt({ live }) {
   );
 }
 
+function NotificationArt({ live }) {
+  return (
+    <span className={['flex h-12 w-14 items-center justify-center rounded-xl bg-sky-100 text-sky-700', live ? '' : 'opacity-40'].join(' ')} aria-hidden="true">
+      <span className="rounded-lg bg-white px-1.5 py-1 text-[0.55rem] font-semibold shadow-sm">
+        {live ? 'Notice' : '···'}
+      </span>
+    </span>
+  );
+}
+
 function ActionVisual({ action, live }) {
+  if (action.type === 'notification') return <NotificationArt live={live} />;
   if (action.type === 'phone') return <PhoneArt live={live} />;
   if (action.type === 'sms') return <SmsArt live={live} message="Alert" />;
   if (action.type === 'strobe') return <StrobeArt live={live} />;

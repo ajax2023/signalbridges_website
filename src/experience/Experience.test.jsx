@@ -50,7 +50,9 @@ describe('experience learning page', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Buttons & Actions' })).toBeTruthy();
     expect(screen.queryByText(/modules completed/)).toBeNull();
     expect(screen.queryByRole('tab', { name: /Basic Alert/i })).toBeNull();
-    expect(screen.queryByText(/Calling security/)).toBeNull();
+    expect(screen.queryByText(/Calling the help number/)).toBeNull();
+    expect(screen.queryByText(/Key Takeaway/)).toBeNull();
+    expect(screen.queryByText(/Flow started/)).toBeNull();
     expect(screen.getByRole('button', { name: 'Reset' }).disabled).toBe(true);
     expect(screen.getByRole('status').textContent).toMatch(/Ready/);
   });
@@ -74,26 +76,27 @@ describe('experience learning page', () => {
 
   it('runs a button scenario through the timeline, then replays and resets', () => {
     renderExperience();
-    fireEvent.click(screen.getByRole('button', { name: /Emergency Button/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Call for help/i }));
 
     act(() => {
       vi.advanceTimersByTime(200);
     });
     expect(document.querySelector('[data-step="received"]').getAttribute('data-state')).not.toBe('idle');
     expect(document.querySelector('[data-step="completed"]').getAttribute('data-state')).toBe('idle');
-    expect(screen.queryByText(/Calling security/)).toBeNull();
+    expect(screen.queryByText(/Flow started/)).toBeNull();
+    expect(screen.queryByText(/Calling the help number/)).toBeNull();
 
     act(() => {
       vi.runAllTimers();
     });
 
-    expect(screen.getByRole('status').textContent).toMatch(/Completed Emergency Button/);
-    expect(screen.getByText(/Calling security/)).toBeTruthy();
-    expect(screen.getByText('Strobe Activated')).toBeTruthy();
-    expect(screen.queryByText('SMS Notification')).toBeNull();
+    expect(screen.getByRole('status').textContent).toMatch(/Completed Call for help/);
+    expect(screen.getAllByText('Calling help number').length).toBeGreaterThan(0);
+    expect(screen.getByText(/Calling the help number/)).toBeTruthy();
+    expect(screen.queryByText('SMS someone')).toBeNull();
     expect(screen.queryByText(/Try different scenarios/i)).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: /Emergency Button/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Call for help/i }));
     expect(screen.getByRole('status').textContent).toMatch(/Running/);
 
     act(() => {
@@ -103,26 +106,26 @@ describe('experience learning page', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
     expect(screen.getByRole('status').textContent).toMatch(/Ready/);
-    expect(screen.queryByText(/Calling security/)).toBeNull();
-    expect(screen.getByRole('button', { name: /Emergency Button/i }).textContent).not.toMatch(/Completed/);
+    expect(screen.queryByText(/Calling the help number/)).toBeNull();
+    expect(screen.getByRole('button', { name: /Call for help/i }).textContent).not.toMatch(/Completed/);
   });
 
   it('persists completion across a new visit', () => {
     const first = renderExperience();
-    fireEvent.click(screen.getByRole('button', { name: /Help Button/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Message someone/i }));
     act(() => {
       vi.runAllTimers();
     });
-    expect(screen.getByRole('button', { name: /Help Button/i }).textContent).toMatch(/Completed/);
+    expect(screen.getByRole('button', { name: /Message someone/i }).textContent).toMatch(/Completed/);
     const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY));
-    expect(stored.modules.A.events).toContain('help');
+    expect(stored.modules.A.events).toContain('message-someone');
     first.unmount();
 
     const second = renderExperience();
-    expect(screen.getByRole('button', { name: /Help Button/i }).textContent).toMatch(/Completed/);
+    expect(screen.getByRole('button', { name: /Message someone/i }).textContent).toMatch(/Completed/);
     expect(screen.getByRole('button', { name: 'Reset' }).disabled).toBe(false);
     fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
-    expect(screen.getByRole('button', { name: /Help Button/i }).textContent).not.toMatch(/Completed/);
+    expect(screen.getByRole('button', { name: /Message someone/i }).textContent).not.toMatch(/Completed/);
     expect(JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)).modules.A).toBeUndefined();
     second.unmount();
   });
@@ -137,11 +140,11 @@ describe('experience learning page', () => {
       })),
     );
     renderExperience();
-    fireEvent.click(screen.getByRole('button', { name: /Door Button/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Email someone/i }));
     act(() => {
       vi.advanceTimersByTime(30);
     });
-    expect(screen.getByRole('status').textContent).toMatch(/Completed Door Button/);
+    expect(screen.getByRole('status').textContent).toMatch(/Completed Email someone/);
     expect(document.querySelector('[data-step="completed"]').getAttribute('data-state')).toBe('done');
   });
 
@@ -166,8 +169,8 @@ describe('experience learning page', () => {
     fireEvent.click(toggle);
     expect(screen.getByRole('navigation', { name: 'Learning modules' }).className).not.toContain('hidden');
     const stage = document.querySelector('[aria-busy]');
-    expect(stage.className).toContain('grid-cols-1');
-    expect(stage.className).toContain('lg:grid-cols-3');
+    expect(stage.className).toContain('flex');
+    expect(document.querySelector('[aria-label="Event"] .grid').className).toContain('sm:grid-cols-4');
     expect(document.querySelector('.sb-learn').className).toContain('overflow-hidden');
   });
 

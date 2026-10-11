@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { bridgeView } from './bridgeView';
 import { buildButtonEvents } from '../scenarios/buttons';
 
-const event = buildButtonEvents('basic-alert').find((item) => item.id === 'emergency');
+const event = buildButtonEvents().find((item) => item.id === 'call-help');
 
 describe('bridgeView', () => {
   it('keeps every stage waiting before an event starts', () => {
@@ -22,6 +22,15 @@ describe('bridgeView', () => {
     expect(bridgeView(event, { ...base, activeStepIndex: 1 }).find((s) => s.id === 'flow').state).toBe('active');
     expect(bridgeView(event, { ...base, activeStepIndex: 3 }).find((s) => s.id === 'executing').state).toBe('active');
     expect(bridgeView(event, { ...base, activeStepIndex: 3 }).find((s) => s.id === 'completed').state).toBe('idle');
+  });
+
+  it('hides the flow stage for the buttons lesson', () => {
+    const steps = bridgeView(event, { status: 'running', activeStepIndex: 1, activeActionIds: [] }, { omitFlow: true });
+    expect(steps.map((step) => step.label)).toEqual([
+      'Event received',
+      'Action running',
+      'Completed',
+    ]);
   });
 
   it('marks every stage done only when the run completes', () => {

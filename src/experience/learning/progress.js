@@ -44,6 +44,13 @@ export function addCompletion(progress, moduleId, eventId) {
   };
 }
 
+export function clearModuleCompletions(progress, moduleId) {
+  if (!moduleId || !progress.modules?.[moduleId]) return progress;
+  const modules = { ...progress.modules };
+  delete modules[moduleId];
+  return { modules };
+}
+
 export function isModuleComplete(progress, moduleId) {
   return (progress.modules?.[moduleId]?.events || []).length > 0;
 }
@@ -64,5 +71,14 @@ export function useLearningProgress() {
     });
   }, []);
 
-  return { progress, recordCompletion };
+  const clearModule = useCallback((moduleId) => {
+    setProgress((prev) => {
+      const next = clearModuleCompletions(prev, moduleId);
+      if (next === prev) return prev;
+      saveProgress(next);
+      return next;
+    });
+  }, []);
+
+  return { progress, recordCompletion, clearModule };
 }

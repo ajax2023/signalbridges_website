@@ -104,6 +104,7 @@ describe('experience learning page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
     expect(screen.getByRole('status').textContent).toMatch(/Ready/);
     expect(screen.queryByText(/Calling security/)).toBeNull();
+    expect(screen.getByRole('button', { name: /Emergency Button/i }).textContent).not.toMatch(/Completed/);
   });
 
   it('persists completion across a new visit', () => {
@@ -117,8 +118,13 @@ describe('experience learning page', () => {
     expect(stored.modules.A.events).toContain('help');
     first.unmount();
 
-    renderExperience();
+    const second = renderExperience();
     expect(screen.getByRole('button', { name: /Help Button/i }).textContent).toMatch(/Completed/);
+    expect(screen.getByRole('button', { name: 'Reset' }).disabled).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+    expect(screen.getByRole('button', { name: /Help Button/i }).textContent).not.toMatch(/Completed/);
+    expect(JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)).modules.A).toBeUndefined();
+    second.unmount();
   });
 
   it('completes a reduced-motion run without a long wait', () => {

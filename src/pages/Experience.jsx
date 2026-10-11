@@ -40,7 +40,7 @@ function Experience() {
   const seenRunRef = useRef(null);
 
   const module = getModule(moduleId);
-  const { progress, recordCompletion } = useLearningProgress();
+  const { progress, recordCompletion, clearModule } = useLearningProgress();
   const { state, play, replay, reset } = useExperienceTimeline();
   const catalogEvents = useMemo(
     () => eventsForModule(module, 'basic-alert'),
@@ -85,6 +85,7 @@ function Experience() {
 
   function handleReset() {
     setComposerEvent(null);
+    clearModule(moduleId);
     reset();
   }
 
@@ -165,7 +166,7 @@ function Experience() {
               <button
                 type="button"
                 onClick={handleReset}
-                disabled={state.status === 'idle'}
+                disabled={state.status === 'idle' && completedEventIds.length === 0}
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 Reset

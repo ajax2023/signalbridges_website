@@ -191,7 +191,15 @@ function Experience() {
                 />
               )}
               <FlowPanel event={selectedEvent} timeline={state} omitFlow={module.kind === 'buttons'} />
-              <ActionsPanel event={selectedEvent} timeline={state} />
+              <ActionsPanel
+                event={selectedEvent}
+                timeline={state}
+                emptyMessage={
+                  module.kind === 'buttons'
+                    ? 'Press a button. Its one action shows up here, and it stays in this browser.'
+                    : undefined
+                }
+              />
             </div>
           </div>
 

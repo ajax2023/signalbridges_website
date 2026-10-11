@@ -1,6 +1,6 @@
 import ActionCard from './ActionCard';
 
-function ActionsPanel({ event, timeline }) {
+function ActionsPanel({ event, timeline, emptyMessage }) {
   const { activeActionIds, completedActionIds } = timeline;
 
   return (
@@ -13,7 +13,8 @@ function ActionsPanel({ event, timeline }) {
       {!event && (
         <div className="flex flex-1 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center">
           <p className="max-w-xs text-sm text-slate-500">
-            Outcomes appear here while the flow runs. Nothing is sent until you start an event, and even then it stays in this browser.
+            {emptyMessage ||
+              'Outcomes appear here while the flow runs. Nothing is sent until you start an event, and even then it stays in this browser.'}
           </p>
         </div>
       )}

@@ -53,6 +53,9 @@ describe('experience learning page', () => {
     expect(screen.queryByText(/Calling the help number/)).toBeNull();
     expect(screen.queryByText(/Key Takeaway/)).toBeNull();
     expect(screen.queryByText(/Flow started/)).toBeNull();
+    expect(screen.queryByText(/while the flow runs/)).toBeNull();
+    expect(screen.getByText(/Press a button. Its one action/)).toBeTruthy();
+    expect(screen.getByText('Action running')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Reset' }).disabled).toBe(true);
     expect(screen.getByRole('status').textContent).toMatch(/Ready/);
   });

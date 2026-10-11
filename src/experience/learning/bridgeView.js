@@ -38,7 +38,7 @@ export function bridgeView(event, timeline, { omitFlow = false } = {}) {
     },
     {
       id: 'executing',
-      label: singleAction ? 'Action running' : 'Actions executing',
+      label: singleAction || omitFlow ? 'Action running' : 'Actions executing',
       detail: executing === 'idle' ? 'Waiting' : singleAction || 'Calling, notifying, activating devices',
       state: executing,
     },

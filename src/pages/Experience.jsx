@@ -160,6 +160,19 @@ function Experience() {
             </aside>
           </div>
 
+          {module.kind === 'buttons' && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleReset}
+                disabled={state.status === 'idle'}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                Reset
+              </button>
+            </div>
+          )}
+
           <div
             className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3 [&>*]:min-w-0"
             aria-busy={running}
@@ -190,18 +203,7 @@ function Experience() {
             <ActionsPanel event={selectedEvent} timeline={state} />
           </div>
 
-          {module.kind === 'buttons' ? (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={handleReset}
-                disabled={state.status === 'idle'}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              >
-                Reset
-              </button>
-            </div>
-          ) : (
+          {module.kind !== 'buttons' && (
             <ScenarioPicker
               title="Demonstration controls"
               description="Replay the last event, reset the stage, or turn sound on. Sound stays off until you enable it."

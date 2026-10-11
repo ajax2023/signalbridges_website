@@ -1,108 +1,82 @@
-import { ACCENT_CLASSES, ExperienceIcon } from './icons';
+import brandLogo from '../assets/signal-bridge-console.png';
+import { bridgeView } from './learning/bridgeView';
+import { StepBadge } from './EventsPanel';
 
 function FlowPanel({ event, timeline }) {
-  const accent = event ? ACCENT_CLASSES[event.accent] || ACCENT_CLASSES.sky : null;
-  const { status, activeStepIndex, completedStepIds } = timeline;
+  const steps = bridgeView(event, timeline);
+  const live = timeline.status === 'running' || timeline.status === 'complete';
 
   return (
     <section
-      className="sb-experience__panel flex h-full flex-col rounded-2xl p-4 sm:p-5"
-      aria-label="Flows"
+      className="relative flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-5"
+      aria-label="Signal Bridge"
     >
-      <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="mb-2 flex items-center gap-3">
+        <StepBadge n={2} />
         <div>
-          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-sky-400">
-            Flows
-          </p>
-          <h2 className="mt-1 text-lg font-semibold text-white">Workflow</h2>
+          <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
+          <p className="text-sm text-slate-500">Processes the event.</p>
         </div>
-        <span className="rounded-md border border-amber-400/30 bg-amber-400/10 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-amber-200">
-          Simulated
-        </span>
       </div>
 
-      {!event && (
-        <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-slate-700/80 bg-slate-950/50 px-6 py-12 text-center">
-          <p className="text-base font-medium text-slate-200">Click an event to begin</p>
-          <p className="mt-2 max-w-xs text-sm text-slate-500">
-            Watch Signal Bridge evaluate conditions, route the response, and dispatch actions.
-          </p>
+      <div className="relative flex flex-1 flex-col items-center justify-center py-4">
+        <svg
+          className={[
+            'pointer-events-none absolute -left-6 top-6 hidden h-28 w-16 xl:block',
+            live ? 'sb-learn__dash' : 'opacity-40',
+          ].join(' ')}
+          viewBox="0 0 64 110"
+          aria-hidden="true"
+        >
+          <path d="M60 18 C 18 18, 18 78, 4 96" fill="none" stroke="#60a5fa" strokeWidth="2.2" strokeDasharray="4 6" strokeLinecap="round" />
+          <path d="M58 46 C 28 46, 24 70, 8 78" fill="none" stroke="#93c5fd" strokeWidth="2" strokeDasharray="4 6" strokeLinecap="round" />
+        </svg>
+        <svg
+          className={[
+            'pointer-events-none absolute -right-6 top-6 hidden h-28 w-16 xl:block',
+            live ? 'sb-learn__dash' : 'opacity-40',
+          ].join(' ')}
+          viewBox="0 0 64 110"
+          aria-hidden="true"
+        >
+          <path d="M4 24 C 40 24, 42 70, 60 92" fill="none" stroke="#60a5fa" strokeWidth="2.2" strokeDasharray="4 6" strokeLinecap="round" />
+          <path d="M6 48 C 36 50, 40 72, 58 80" fill="none" stroke="#93c5fd" strokeWidth="2" strokeDasharray="4 6" strokeLinecap="round" />
+        </svg>
+        <div className="sb-learn__logo-glow flex h-36 w-36 items-center justify-center rounded-[2rem]">
+          <img
+            src={brandLogo}
+            alt="Signal Bridge logo"
+            className={['h-24 w-24 object-contain', live ? 'sb-experience__pulse' : ''].join(' ')}
+          />
         </div>
-      )}
+      </div>
 
-      {event && (
-        <div className="flex flex-1 flex-col">
-          <div
-            key={`${event.id}-${timeline.runId}-ingress`}
-            className={`sb-experience__ingress mb-5 flex items-center gap-3 rounded-xl border px-3 py-3 ${accent.chip}`}
-          >
+      <ol className="rounded-2xl bg-[#10243d] p-4 text-white" aria-live="polite">
+        {steps.map((step) => (
+          <li key={step.id} data-step={step.id} data-state={step.state} className="flex gap-3 py-1.5">
             <span
-              className={`flex h-12 w-12 items-center justify-center rounded-xl ${accent.soft} ${accent.text}`}
+              className={[
+                'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.7rem] font-bold',
+                step.state === 'idle'
+                  ? 'bg-white/10 text-slate-500'
+                  : 'bg-emerald-400 text-[#10243d]',
+                step.state === 'active' ? 'sb-experience__step-active' : '',
+              ].join(' ')}
+              aria-hidden="true"
             >
-              <ExperienceIcon name={event.icon} className="h-7 w-7" />
+              {step.state === 'idle' ? '' : '✓'}
             </span>
-            <div className="min-w-0 text-left">
-              <p className="text-sm font-semibold text-white">{event.label}</p>
-              <p className="truncate text-xs text-slate-400">{event.ingressLabel}</p>
-            </div>
-            <span className="ml-auto text-[0.65rem] font-semibold uppercase tracking-wider text-slate-400">
-              {status === 'complete' ? 'Complete' : status === 'running' ? 'Running' : 'Ready'}
+            <span className="min-w-0">
+              <span className={['block text-sm font-semibold', step.state === 'idle' ? 'text-slate-400' : 'text-white'].join(' ')}>
+                {step.label}
+              </span>
+              <span className={['block text-xs', step.state === 'idle' ? 'text-slate-500' : 'text-slate-300'].join(' ')}>
+                {step.detail}
+              </span>
             </span>
-          </div>
-
-          <ol className="relative flex flex-1 flex-col" aria-live="polite">
-            {event.flowSteps.map((step, index) => {
-              const done =
-                completedStepIds.includes(step.id) ||
-                (status === 'complete' && index <= activeStepIndex);
-              const active = status === 'running' && activeStepIndex === index;
-              const pending = !done && !active;
-
-              return (
-                <li key={step.id} className="relative flex gap-3 pb-4 last:pb-0">
-                  {index < event.flowSteps.length - 1 && (
-                    <span
-                      className={[
-                        'sb-experience__flow-line absolute left-[15px] top-8 h-[calc(100%-1rem)] w-px',
-                        done || active ? 'bg-sky-400/70' : 'bg-slate-700',
-                      ].join(' ')}
-                      aria-hidden="true"
-                    />
-                  )}
-                  <span
-                    className={[
-                      'relative z-[1] mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border text-xs font-semibold',
-                      active
-                        ? 'border-sky-300 bg-sky-500 text-slate-950 sb-experience__step-active'
-                        : done
-                          ? 'border-sky-400/50 bg-sky-400/20 text-sky-200'
-                          : 'border-slate-600 bg-slate-900 text-slate-500',
-                    ].join(' ')}
-                  >
-                    {done && !active ? '✓' : index + 1}
-                  </span>
-                  <div
-                    className={[
-                      'min-w-0 flex-1 rounded-xl border px-3 py-2.5 transition-colors',
-                      active
-                        ? 'border-sky-400/40 bg-sky-400/10'
-                        : done
-                          ? 'border-slate-600/80 bg-slate-900/60'
-                          : 'border-slate-800 bg-slate-950/40',
-                      pending ? 'opacity-40' : '',
-                    ].join(' ')}
-                  >
-                    <p className={`text-sm font-semibold ${active || done ? 'text-white' : 'text-slate-400'}`}>
-                      {step.label}
-                    </p>
-                    <p className="mt-0.5 text-xs text-slate-400">{step.detail}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      )}
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

@@ -21,6 +21,7 @@ export function actions(list) {
     type: a.type,
     label: a.label,
     result: a.result,
+    ...(a.displayText ? { displayText: a.displayText } : {}),
   }));
 }
 

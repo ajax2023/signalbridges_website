@@ -168,6 +168,14 @@ export function ExperienceIcon({ name, className = 'h-8 w-8' }) {
           <path {...stroke} d="M11 14h10M11 17h6" />
         </Svg>
       );
+    case 'display':
+      return (
+        <Svg className={className}>
+          <rect {...stroke} x="4" y="7" width="24" height="16" rx="2" />
+          <path {...stroke} d="M12 27h8M16 23v4" />
+          <path {...stroke} d="M8 12h10M8 16h7" />
+        </Svg>
+      );
     default:
       return (
         <Svg className={className}>

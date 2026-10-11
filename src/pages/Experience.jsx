@@ -1,130 +1,227 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import EventsPanel from '../experience/EventsPanel';
 import FlowPanel from '../experience/FlowPanel';
 import ActionsPanel from '../experience/ActionsPanel';
 import ScenarioPicker from '../experience/ScenarioPicker';
-import SimulationStatus from '../experience/SimulationStatus';
+import FlowComposer from '../experience/FlowComposer';
+import LearningSidebar from '../experience/LearningSidebar';
 import { useExperienceTimeline } from '../experience/engine/useExperienceTimeline';
+import { useDemoCues } from '../experience/useDemoCues';
+import { BUTTON_SCENARIOS } from '../experience/scenarios/buttons';
 import {
-  DEFAULT_SCENARIO_ID,
-  SCENARIO_LIST,
-  getScenario,
-} from '../experience/scenarios';
+  buildFlowEvent,
+  eventsForModule,
+  getModule,
+} from '../experience/learning/modules';
+import { useLearningProgress } from '../experience/learning/progress';
 import '../experience/experience.css';
 
-function Experience() {
-  const [scenarioId, setScenarioId] = useState(DEFAULT_SCENARIO_ID);
-  const scenario = useMemo(() => getScenario(scenarioId), [scenarioId]);
-  const { state, play, replay, reset } = useExperienceTimeline();
+function Lightbulb() {
+  return (
+    <svg viewBox="0 0 32 32" className="h-5 w-5 text-amber-400" aria-hidden="true">
+      <path
+        d="M16 4a8 8 0 0 0-4 14.9V22h8v-3.1A8 8 0 0 0 16 4z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <path d="M13 25h6M14 28h4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
 
-  const selectedEvent = useMemo(
-    () => scenario.events.find((e) => e.id === state.eventId) || null,
-    [scenario.events, state.eventId],
+function Experience() {
+  const [moduleId, setModuleId] = useState('A');
+  const [scenarioId, setScenarioId] = useState('basic-alert');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [soundOn, setSoundOn] = useState(false);
+  const [triggerId, setTriggerId] = useState('button');
+  const [actionTypes, setActionTypes] = useState(['phone', 'sms']);
+  const [composerEvent, setComposerEvent] = useState(null);
+  const playModuleRef = useRef('A');
+  const seenRunRef = useRef(null);
+
+  const module = getModule(moduleId);
+  const { progress, recordCompletion } = useLearningProgress();
+  const { state, play, replay, reset } = useExperienceTimeline();
+  const catalogEvents = useMemo(
+    () => eventsForModule(module, scenarioId),
+    [module, scenarioId],
   );
 
+  const selectedEvent =
+    module.kind === 'composer'
+      ? composerEvent
+      : catalogEvents.find((event) => event.id === state.eventId) || null;
+
   const running = state.status === 'running';
-  const complete = state.status === 'complete';
+  const completedEventIds = progress.modules[module.id]?.events || [];
+
+  useDemoCues(soundOn, selectedEvent, state);
 
   useEffect(() => {
+    setComposerEvent(null);
     reset();
-  }, [scenarioId, reset]);
+  }, [moduleId, scenarioId, reset]);
+
+  useEffect(() => {
+    if (state.status !== 'complete' || !state.eventId) return;
+    if (seenRunRef.current === state.runId) return;
+    seenRunRef.current = state.runId;
+    recordCompletion(playModuleRef.current, state.eventId);
+  }, [state.status, state.runId, state.eventId, recordCompletion]);
 
   function handleSelect(eventId) {
     if (running) return;
-    const event = scenario.events.find((e) => e.id === eventId);
+    const event = catalogEvents.find((item) => item.id === eventId);
     if (!event) return;
+    playModuleRef.current = moduleId;
     play(event);
   }
 
   function handleReplay() {
     if (!selectedEvent || running) return;
+    playModuleRef.current = moduleId;
     replay(selectedEvent);
+  }
+
+  function handleReset() {
+    setComposerEvent(null);
+    reset();
   }
 
   function handleScenarioChange(nextId) {
     if (nextId === scenarioId) return;
-    if (running) return;
     setScenarioId(nextId);
   }
 
+  function handleRunFlow() {
+    if (running || actionTypes.length === 0) return;
+    const event = buildFlowEvent(triggerId, actionTypes);
+    playModuleRef.current = moduleId;
+    setComposerEvent(event);
+    play(event);
+  }
+
+  function handleToggleAction(type) {
+    setActionTypes((current) => (
+      current.includes(type) ? current.filter((item) => item !== type) : [...current, type]
+    ));
+    setComposerEvent(null);
+    reset();
+  }
+
+  const statusText =
+    state.status === 'running'
+      ? `Running ${selectedEvent?.label || 'demonstration'}`
+      : state.status === 'complete'
+        ? `Completed ${selectedEvent?.label || 'demonstration'}`
+        : 'Ready. Select an event.';
+
   return (
-    <div
-      className={[
-        'sb-experience',
-        `sb-experience--${scenario.theme || scenario.id}`,
-        'min-h-[calc(100vh-8.5rem)] px-4 py-6 sm:px-6 lg:min-h-[calc(100vh-9rem)] lg:px-8 lg:py-8',
-      ].join(' ')}
-    >
-      <div className="mx-auto flex w-full max-w-[96rem] flex-col gap-5">
-        <header className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-          <div className="max-w-3xl space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-400">
-                Signal Bridge experience
-              </p>
-              <span className="rounded-md border border-amber-400/35 bg-amber-400/10 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wider text-amber-200">
-                All actions simulated
-              </span>
+    <div className="sb-learn flex min-h-[calc(100vh-4.25rem)] overflow-x-hidden bg-[#f4f7fb] text-slate-900">
+      <LearningSidebar
+        activeId={module.id}
+        progress={progress}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        onSelect={(id) => {
+          setModuleId(id);
+          setSidebarOpen(false);
+        }}
+      />
+
+      <div className="min-w-0 flex-1">
+        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+          <button
+            type="button"
+            className="inline-flex w-fit items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 xl:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            Open learning modules
+          </button>
+
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-blue-500 text-lg font-bold text-blue-600">
+                  {module.id}
+                </span>
+                <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{module.title}</h1>
+              </div>
+              <p className="mt-3 text-base text-slate-600">{module.lede}</p>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">{module.body}</p>
+              {module.simulated && (
+                <p className="mt-3 inline-flex max-w-2xl rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold leading-relaxed text-amber-800">
+                  Simulation — {module.simulationNote}
+                </p>
+              )}
             </div>
-            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              {scenario.title}
-            </h1>
-            <p className="text-sm text-slate-300 max-w-2xl">
-              {scenario.description}
-            </p>
+
+            <aside className="w-full rounded-3xl border border-slate-200 bg-white p-4 shadow-sm xl:max-w-sm">
+              <div className="flex items-center gap-2">
+                <Lightbulb />
+                <h2 className="text-sm font-semibold text-slate-900">Key Takeaway</h2>
+              </div>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{module.takeaway}</p>
+            </aside>
           </div>
 
-          <div className="flex flex-col items-stretch gap-3 sm:items-end">
-            <SimulationStatus status={state.status} eventLabel={selectedEvent?.label} />
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={handleReplay}
-                disabled={!selectedEvent || running}
-                className="inline-flex items-center justify-center rounded-md bg-sky-500 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Replay
-              </button>
-              <button
-                type="button"
-                onClick={reset}
-                disabled={state.status === 'idle'}
-                className="inline-flex items-center justify-center rounded-md border border-slate-600 bg-slate-900/70 px-4 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-slate-400 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Reset
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <ScenarioPicker
-          scenarios={SCENARIO_LIST}
-          activeId={scenario.id}
-          disabled={running}
-          onChange={handleScenarioChange}
-        />
-
-        <div className="grid gap-4 lg:grid-cols-12 lg:gap-5 lg:items-stretch">
-          <div className="lg:col-span-3 min-h-[24rem]">
-            <EventsPanel
-              events={scenario.events}
-              selectedEventId={state.eventId}
-              running={running}
-              onSelect={handleSelect}
-            />
-          </div>
-          <div className="lg:col-span-5 min-h-[24rem]">
+          <div
+            className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3 [&>*]:min-w-0"
+            aria-busy={running}
+          >
+            {module.kind === 'composer' ? (
+              <FlowComposer
+                triggerId={triggerId}
+                actionTypes={actionTypes}
+                running={running}
+                onTrigger={(next) => {
+                  setTriggerId(next);
+                  setComposerEvent(null);
+                  reset();
+                }}
+                onToggleAction={handleToggleAction}
+                onRun={handleRunFlow}
+              />
+            ) : (
+              <EventsPanel
+                events={catalogEvents}
+                selectedEventId={state.eventId}
+                running={running}
+                completedEventIds={completedEventIds}
+                onSelect={handleSelect}
+              />
+            )}
             <FlowPanel event={selectedEvent} timeline={state} />
-          </div>
-          <div className="lg:col-span-4 min-h-[24rem]">
             <ActionsPanel event={selectedEvent} timeline={state} />
           </div>
-        </div>
 
-        <p className="text-center text-[0.7rem] text-slate-500">
-          Demonstration only — no emails, calls, paging, or device commands are sent.
-          {complete ? ' Run complete. Replay or choose another event.' : ''}
-        </p>
+          <ScenarioPicker
+            title={module.kind === 'buttons' ? 'Try different scenarios' : 'Demonstration controls'}
+            description={
+              module.kind === 'buttons'
+                ? 'See how the same button can trigger different actions.'
+                : 'Replay the last event, reset the stage, or turn sound on. Sound stays off until you enable it.'
+            }
+            scenarios={module.kind === 'buttons' ? BUTTON_SCENARIOS : []}
+            activeId={scenarioId}
+            onChange={handleScenarioChange}
+            onReplay={handleReplay}
+            onReset={handleReset}
+            canReplay={Boolean(selectedEvent) && !running}
+            canReset={state.status !== 'idle'}
+            soundOn={soundOn}
+            onToggleSound={() => setSoundOn((value) => !value)}
+          />
+
+          <p className="text-center text-xs text-slate-500">
+            Demonstration only. No calls, text messages, emails, pages, or device commands leave this browser.
+          </p>
+          <div role="status" className="sr-only">
+            {statusText}
+          </div>
+        </div>
       </div>
     </div>
   );

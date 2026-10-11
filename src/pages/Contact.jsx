@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const fieldClassName =
   'w-full min-w-[220px] rounded-md border border-slate-700 bg-slate-900/40 px-3 py-2 text-sm text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500';
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [searchParams] = useSearchParams();
+  const topic = searchParams.get('topic');
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -25,6 +28,16 @@ function Contact() {
           platform. We will use this information to route your request to the
           right person.
         </p>
+        {topic === 'pricing' && (
+          <p className="text-sm text-slate-300 leading-relaxed">
+            You are asking about pricing. Describe your sites and we will follow up with options for your deployment.
+          </p>
+        )}
+        {topic === 'demo' && (
+          <p className="text-sm text-slate-300 leading-relaxed">
+            You are requesting a demo. Tell us about your environment and we will schedule time with the right person.
+          </p>
+        )}
       </div>
 
       <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-4 space-y-2">

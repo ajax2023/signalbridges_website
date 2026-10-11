@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import brandLogo from '../assets/signal-bridge-console.png';
+import ExperienceHeader from './ExperienceHeader';
 
 const navItems = [
   { to: '/', label: 'Overview' },
@@ -18,42 +19,18 @@ function Layout({ children }) {
   const isExperience = pathname === '/experience';
 
   const shellClass = isExperience
-    ? 'min-h-screen flex flex-col bg-slate-950 text-slate-100'
+    ? 'min-h-screen flex flex-col bg-[#f4f7fb] text-slate-900'
     : 'min-h-screen flex flex-col bg-white text-slate-900';
 
-  const headerClass = isExperience
-    ? 'border-b border-slate-800 bg-slate-950'
-    : 'border-b border-slate-200 bg-white';
-
-  const brandClass = isExperience
-    ? 'text-lg font-semibold tracking-tight text-white'
-    : 'text-lg font-semibold tracking-tight text-slate-900';
-
-  const taglineClass = isExperience
-    ? 'hidden sm:block text-xs text-slate-400'
-    : 'hidden sm:block text-xs text-slate-500';
-
-  const menuButtonClass = isExperience
-    ? 'md:hidden inline-flex items-center rounded-md border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400'
-    : 'md:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400';
-
-  const mobileNavClass = isExperience
-    ? 'md:hidden border-b border-slate-800 bg-slate-950'
-    : 'md:hidden border-b border-slate-200 bg-white';
-
-  const footerClass = isExperience
-    ? 'border-t border-slate-800 bg-slate-950'
-    : 'border-t border-slate-200 bg-slate-50';
+  const headerClass = 'border-b border-slate-200 bg-white';
+  const brandClass = 'text-lg font-semibold tracking-tight text-slate-900';
+  const taglineClass = 'hidden sm:block text-xs text-slate-500';
+  const menuButtonClass =
+    'md:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400';
+  const mobileNavClass = 'md:hidden border-b border-slate-200 bg-white';
+  const footerClass = 'border-t border-slate-200 bg-slate-50';
 
   function navClass({ isActive }) {
-    if (isExperience) {
-      return [
-        'px-3 py-1.5 rounded-md transition-colors',
-        isActive
-          ? 'text-sky-300 bg-sky-500/10'
-          : 'text-slate-300 hover:text-sky-300 hover:bg-sky-500/10',
-      ].join(' ');
-    }
     return [
       'px-3 py-1.5 rounded-md transition-colors',
       isActive
@@ -63,14 +40,6 @@ function Layout({ children }) {
   }
 
   function mobileNavLinkClass({ isActive }) {
-    if (isExperience) {
-      return [
-        'block px-3 py-2 rounded-md text-sm transition-colors',
-        isActive
-          ? 'text-sky-300 bg-sky-500/10'
-          : 'text-slate-300 hover:text-sky-300 hover:bg-sky-500/10',
-      ].join(' ');
-    }
     return [
       'block px-3 py-2 rounded-md text-sm transition-colors',
       isActive
@@ -81,6 +50,9 @@ function Layout({ children }) {
 
   return (
     <div className={shellClass}>
+      {isExperience ? (
+        <ExperienceHeader />
+      ) : (
       <header className={headerClass}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -121,7 +93,8 @@ function Layout({ children }) {
           </button>
         </div>
       </header>
-      {mobileOpen && (
+      )}
+      {mobileOpen && !isExperience && (
         <nav id="mobile-nav" className={mobileNavClass}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 py-2 grid gap-1">
             {navItems.map((item) => (
@@ -147,12 +120,14 @@ function Layout({ children }) {
           {children}
         </div>
       </main>
+      {!isExperience && (
       <footer className={footerClass}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 text-xs text-slate-500 flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-4">
           <span>© {new Date().getFullYear()} Signal Bridge™.</span>
           <span>Built for schools, public safety, health, and defense teams.</span>
         </div>
       </footer>
+      )}
     </div>
   );
 }

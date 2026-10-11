@@ -1,14 +1,7 @@
 import { LEARNING_MODULES } from './learning/modules';
-import { completedCount, isModuleComplete } from './learning/progress';
+import { isModuleComplete } from './learning/progress';
 
 function LearningSidebar({ activeId, progress, open, onSelect, onClose }) {
-  const total = LEARNING_MODULES.length;
-  const done = completedCount(
-    progress,
-    LEARNING_MODULES.map((module) => module.id),
-  );
-  const pct = Math.round((done / total) * 100);
-
   return (
     <>
       {open && (
@@ -87,22 +80,6 @@ function LearningSidebar({ activeId, progress, open, onSelect, onClose }) {
               </button>
             );
           })}
-        </div>
-        <div className="border-t border-white/10 px-4 py-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Your Progress</p>
-          <div
-            className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={total}
-            aria-valuenow={done}
-            aria-label="Learning progress"
-          >
-            <div className="h-full rounded-full bg-blue-500" style={{ width: `${pct}%` }} />
-          </div>
-          <p className="mt-2 text-xs text-slate-300">
-            {done} of {total} modules completed
-          </p>
         </div>
       </nav>
     </>

@@ -1,6 +1,5 @@
 import brandLogo from '../assets/signal-bridge-console.png';
 import { bridgeView } from './learning/bridgeView';
-import { StepBadge } from './EventsPanel';
 
 function FlowPanel({ event, timeline }) {
   const steps = bridgeView(event, timeline);
@@ -11,37 +10,12 @@ function FlowPanel({ event, timeline }) {
       className="relative flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-5"
       aria-label="Signal Bridge"
     >
-      <div className="mb-2 flex items-center gap-3">
-        <StepBadge n={2} />
-        <div>
-          <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
-          <p className="text-sm text-slate-500">Processes the event.</p>
-        </div>
+      <div className="mb-2">
+        <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
+        <p className="text-sm text-slate-500">Processes the event.</p>
       </div>
 
       <div className="relative flex flex-1 flex-col items-center justify-center py-4">
-        <svg
-          className={[
-            'pointer-events-none absolute -left-6 top-6 hidden h-28 w-16 xl:block',
-            live ? 'sb-learn__dash' : 'opacity-40',
-          ].join(' ')}
-          viewBox="0 0 64 110"
-          aria-hidden="true"
-        >
-          <path d="M60 18 C 18 18, 18 78, 4 96" fill="none" stroke="#60a5fa" strokeWidth="2.2" strokeDasharray="4 6" strokeLinecap="round" />
-          <path d="M58 46 C 28 46, 24 70, 8 78" fill="none" stroke="#93c5fd" strokeWidth="2" strokeDasharray="4 6" strokeLinecap="round" />
-        </svg>
-        <svg
-          className={[
-            'pointer-events-none absolute -right-6 top-6 hidden h-28 w-16 xl:block',
-            live ? 'sb-learn__dash' : 'opacity-40',
-          ].join(' ')}
-          viewBox="0 0 64 110"
-          aria-hidden="true"
-        >
-          <path d="M4 24 C 40 24, 42 70, 60 92" fill="none" stroke="#60a5fa" strokeWidth="2.2" strokeDasharray="4 6" strokeLinecap="round" />
-          <path d="M6 48 C 36 50, 40 72, 58 80" fill="none" stroke="#93c5fd" strokeWidth="2" strokeDasharray="4 6" strokeLinecap="round" />
-        </svg>
         <div className="sb-learn__logo-glow flex h-36 w-36 items-center justify-center rounded-[2rem]">
           <img
             src={brandLogo}

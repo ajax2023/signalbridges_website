@@ -48,9 +48,10 @@ describe('experience learning page', () => {
   it('starts on Buttons & Actions without completed results or progress', () => {
     renderExperience();
     expect(screen.getByRole('heading', { level: 1, name: 'Buttons & Actions' })).toBeTruthy();
-    expect(screen.getByText('0 of 9 modules completed')).toBeTruthy();
+    expect(screen.queryByText(/modules completed/)).toBeNull();
+    expect(screen.queryByRole('tab', { name: /Basic Alert/i })).toBeNull();
     expect(screen.queryByText(/Calling security/)).toBeNull();
-    expect(screen.getByRole('button', { name: 'Replay' }).disabled).toBe(true);
+    expect(screen.getByRole('button', { name: 'Reset' }).disabled).toBe(true);
     expect(screen.getByRole('status').textContent).toMatch(/Ready/);
   });
 
@@ -59,7 +60,7 @@ describe('experience learning page', () => {
     fireEvent.click(screen.getByRole('button', { name: /External Events & Sensors/i }));
     expect(screen.getByRole('heading', { level: 1, name: 'External Events & Sensors' })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Water leak/i })).toBeTruthy();
-    expect(screen.getByText('0 of 9 modules completed')).toBeTruthy();
+    expect(screen.queryByText(/modules completed/)).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: /IoT Devices/i }));
     expect(screen.getByRole('button', { name: /Shelly input/i })).toBeTruthy();
@@ -68,7 +69,7 @@ describe('experience learning page', () => {
     expect(screen.getByRole('button', { name: /Gateway offline/i })).toBeTruthy();
     expect(document.body.textContent).not.toMatch(/Sidewalk/i);
     expect(document.body.textContent).not.toMatch(/Ring sensor|Amazon Ring/i);
-    expect(screen.getByText('0 of 9 modules completed')).toBeTruthy();
+    expect(screen.queryByText(/Your Progress/i)).toBeNull();
   });
 
   it('runs a button scenario through the timeline, then replays and resets', () => {
@@ -90,9 +91,9 @@ describe('experience learning page', () => {
     expect(screen.getByText(/Calling security/)).toBeTruthy();
     expect(screen.getByText('Strobe Activated')).toBeTruthy();
     expect(screen.queryByText('SMS Notification')).toBeNull();
-    expect(screen.getByText('1 of 9 modules completed')).toBeTruthy();
+    expect(screen.queryByText(/Try different scenarios/i)).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Replay' }));
+    fireEvent.click(screen.getByRole('button', { name: /Emergency Button/i }));
     expect(screen.getByRole('status').textContent).toMatch(/Running/);
 
     act(() => {
@@ -105,31 +106,19 @@ describe('experience learning page', () => {
     expect(screen.queryByText(/Calling security/)).toBeNull();
   });
 
-  it('changes outcomes when a different scenario is selected', () => {
-    renderExperience();
-    fireEvent.click(screen.getByRole('tab', { name: /Multi-Channel/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Emergency Button/i }));
-    act(() => {
-      vi.runAllTimers();
-    });
-    expect(screen.getByText('SMS Notification')).toBeTruthy();
-    expect(screen.getByText('Display Message')).toBeTruthy();
-    expect(screen.queryByText('Strobe Activated')).toBeNull();
-  });
-
   it('persists completion across a new visit', () => {
     const first = renderExperience();
     fireEvent.click(screen.getByRole('button', { name: /Help Button/i }));
     act(() => {
       vi.runAllTimers();
     });
-    expect(screen.getByText('1 of 9 modules completed')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Help Button/i }).textContent).toMatch(/Completed/);
     const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY));
     expect(stored.modules.A.events).toContain('help');
     first.unmount();
 
     renderExperience();
-    expect(screen.getByText('1 of 9 modules completed')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Help Button/i }).textContent).toMatch(/Completed/);
   });
 
   it('completes a reduced-motion run without a long wait', () => {
@@ -158,7 +147,7 @@ describe('experience learning page', () => {
       vi.runAllTimers();
     });
     expect(screen.getByRole('status').textContent).toMatch(/Completed Button press/);
-    expect(screen.getByText('1 of 9 modules completed')).toBeTruthy();
+    expect(screen.queryByText(/Your Progress/i)).toBeNull();
   });
 
   it('stacks on small screens and keeps the module list collapsible', () => {
@@ -178,6 +167,7 @@ describe('experience learning page', () => {
 
   it('keeps sound off until the visitor turns it on', () => {
     renderExperience();
+    fireEvent.click(screen.getByRole('button', { name: /External Events & Sensors/i }));
     const sound = screen.getByRole('button', { name: 'Sound off' });
     expect(sound.getAttribute('aria-pressed')).toBe('false');
     fireEvent.click(sound);

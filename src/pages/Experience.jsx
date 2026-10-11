@@ -7,7 +7,6 @@ import FlowComposer from '../experience/FlowComposer';
 import LearningSidebar from '../experience/LearningSidebar';
 import { useExperienceTimeline } from '../experience/engine/useExperienceTimeline';
 import { useDemoCues } from '../experience/useDemoCues';
-import { BUTTON_SCENARIOS } from '../experience/scenarios/buttons';
 import {
   buildFlowEvent,
   eventsForModule,
@@ -32,7 +31,6 @@ function Lightbulb() {
 
 function Experience() {
   const [moduleId, setModuleId] = useState('A');
-  const [scenarioId, setScenarioId] = useState('basic-alert');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const [triggerId, setTriggerId] = useState('button');
@@ -45,8 +43,8 @@ function Experience() {
   const { progress, recordCompletion } = useLearningProgress();
   const { state, play, replay, reset } = useExperienceTimeline();
   const catalogEvents = useMemo(
-    () => eventsForModule(module, scenarioId),
-    [module, scenarioId],
+    () => eventsForModule(module, 'basic-alert'),
+    [module],
   );
 
   const selectedEvent =
@@ -62,7 +60,7 @@ function Experience() {
   useEffect(() => {
     setComposerEvent(null);
     reset();
-  }, [moduleId, scenarioId, reset]);
+  }, [moduleId, reset]);
 
   useEffect(() => {
     if (state.status !== 'complete' || !state.eventId) return;
@@ -88,11 +86,6 @@ function Experience() {
   function handleReset() {
     setComposerEvent(null);
     reset();
-  }
-
-  function handleScenarioChange(nextId) {
-    if (nextId === scenarioId) return;
-    setScenarioId(nextId);
   }
 
   function handleRunFlow() {
@@ -197,23 +190,32 @@ function Experience() {
             <ActionsPanel event={selectedEvent} timeline={state} />
           </div>
 
-          <ScenarioPicker
-            title={module.kind === 'buttons' ? 'Try different scenarios' : 'Demonstration controls'}
-            description={
-              module.kind === 'buttons'
-                ? 'See how the same button can trigger different actions.'
-                : 'Replay the last event, reset the stage, or turn sound on. Sound stays off until you enable it.'
-            }
-            scenarios={module.kind === 'buttons' ? BUTTON_SCENARIOS : []}
-            activeId={scenarioId}
-            onChange={handleScenarioChange}
-            onReplay={handleReplay}
-            onReset={handleReset}
-            canReplay={Boolean(selectedEvent) && !running}
-            canReset={state.status !== 'idle'}
-            soundOn={soundOn}
-            onToggleSound={() => setSoundOn((value) => !value)}
-          />
+          {module.kind === 'buttons' ? (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleReset}
+                disabled={state.status === 'idle'}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                Reset
+              </button>
+            </div>
+          ) : (
+            <ScenarioPicker
+              title="Demonstration controls"
+              description="Replay the last event, reset the stage, or turn sound on. Sound stays off until you enable it."
+              scenarios={[]}
+              activeId=""
+              onChange={() => {}}
+              onReplay={handleReplay}
+              onReset={handleReset}
+              canReplay={Boolean(selectedEvent) && !running}
+              canReset={state.status !== 'idle'}
+              soundOn={soundOn}
+              onToggleSound={() => setSoundOn((value) => !value)}
+            />
+          )}
 
           <p className="text-center text-xs text-slate-500">
             Demonstration only. No calls, text messages, emails, pages, or device commands leave this browser.

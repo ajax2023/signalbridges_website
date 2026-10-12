@@ -171,20 +171,28 @@ function Experience() {
               <EventsPanel
                 events={catalogEvents}
                 variant={module.kind === 'buttons' || module.tileEvents ? 'tiles' : 'list'}
+                hint={module.kind === 'flows' ? 'Choose a flow.' : undefined}
                 selectedEventId={state.eventId}
                 running={running}
                 completedEventIds={completedEventIds}
                 onSelect={handleSelect}
               />
             )}
-            <FlowPanel event={selectedEvent} timeline={state} omitFlow={module.kind === 'buttons'} />
+            <FlowPanel
+              event={selectedEvent}
+              timeline={state}
+              omitFlow={module.kind === 'buttons'}
+              lesson={module.kind === 'flows'}
+            />
             <ActionsPanel
               event={selectedEvent}
               timeline={state}
               emptyMessage={
                 module.kind === 'buttons'
                   ? 'Press a button. Its one action shows up here, and it stays in this browser.'
-                  : undefined
+                  : module.kind === 'flows'
+                    ? 'Choose a flow. Each step shows up here, and it stays in this browser.'
+                    : undefined
               }
             />
           </div>

@@ -155,7 +155,25 @@ describe('experience learning page', () => {
     expect(document.querySelector('[data-step="completed"]').getAttribute('data-state')).toBe('done');
   });
 
-  it('runs a simulated flow from module I', () => {
+  it('runs a water-leak flow and shows each step before its action', () => {
+    renderExperience();
+    fireEvent.click(screen.getByRole('button', { name: /One event. Several steps/i }));
+    expect(screen.getByRole('heading', { level: 1, name: 'Flows' })).toBeTruthy();
+    expect(screen.getByText('Choose a flow to see its steps.')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /Water Leak Response/i }));
+    expect(screen.getByText('Send SMS to maintenance')).toBeTruthy();
+    expect(screen.getByText('If none, call supervisor')).toBeTruthy();
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(screen.getByRole('status').textContent).toMatch(/Completed Water Leak Response/);
+    expect(screen.getByText('SMS to maintenance')).toBeTruthy();
+    expect(screen.getByText('Call supervisor')).toBeTruthy();
+    expect(screen.getAllByText('Activate strobe').length).toBeGreaterThan(0);
+    expect(screen.queryByText(/Flow started/)).toBeNull();
+  });
+
+  it('runs a simulated flow from the flow builder', () => {
     renderExperience();
     fireEvent.click(screen.getByRole('button', { name: /Bring everything together/i }));
     fireEvent.click(screen.getByRole('button', { name: 'Run flow' }));

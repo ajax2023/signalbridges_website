@@ -88,7 +88,17 @@ function NotificationArt({ live }) {
   );
 }
 
+function WaitArt({ live }) {
+  return (
+    <svg viewBox="0 0 32 32" className={['h-8 w-8 text-slate-600', live ? '' : 'opacity-40'].join(' ')} aria-hidden="true">
+      <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M16 10v7l4 2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function ActionVisual({ action, live }) {
+  if (action.type === 'wait') return <WaitArt live={live} />;
   if (action.type === 'notification') return <NotificationArt live={live} />;
   if (action.type === 'phone') return <PhoneArt live={live} />;
   if (action.type === 'sms') return <SmsArt live={live} message="Alert" />;

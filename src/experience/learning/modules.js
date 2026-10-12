@@ -6,6 +6,7 @@ import { SIP_EVENTS } from '../scenarios/sip';
 import { WEBHOOK_EVENTS } from '../scenarios/webhooks';
 import { IOT_EVENTS } from '../scenarios/iot';
 import { buildButtonEvents } from '../scenarios/buttons';
+import { INTRO_FLOWS } from '../scenarios/introFlows';
 import { eventDef } from '../scenarios/helpers';
 
 function pick(scenario, id) {
@@ -70,13 +71,27 @@ export const LEARNING_MODULES = [
     description: 'Simple events. Real results.',
     title: 'Buttons & Actions',
     lede: 'Press a button and watch the one action it starts.',
-    body: 'Call for help, message someone, email someone, or notify someone. Each button does one thing. Flows come in a later module.',
+    body: 'Call for help, message someone, email someone, or notify someone. Each button does one thing. The next module introduces flows.',
     takeaway: '',
     kind: 'buttons',
     simulated: false,
   },
   {
     id: 'B',
+    name: 'Flows',
+    description: 'One event. Several steps.',
+    title: 'Flows',
+    lede: 'A flow is the path from one event to the actions that follow.',
+    body: 'Choose a flow and watch each step run in order. Waits and "if none" branches are part of the path. Everything stays in this browser.',
+    tileEvents: true,
+    takeaway: '',
+    kind: 'flows',
+    simulated: true,
+    simulationNote: 'These flows are simulated. No call, message, page, or device command leaves this browser.',
+    events: INTRO_FLOWS,
+  },
+  {
+    id: 'C',
     name: 'External Events & Sensors',
     description: 'Real-world device events.',
     title: 'External Events & Sensors',
@@ -90,7 +105,7 @@ export const LEARNING_MODULES = [
     events: SENSORS_SCENARIO.events,
   },
   {
-    id: 'C',
+    id: 'D',
     name: 'Scheduled & Automated',
     description: 'Time-based events.',
     title: 'Scheduled & Automated',
@@ -103,7 +118,7 @@ export const LEARNING_MODULES = [
     events: EDUCATION_SCENARIO.events,
   },
   {
-    id: 'D',
+    id: 'E',
     name: 'Algo Devices',
     description: 'Visuals, audio and alerts.',
     title: 'Algo Devices',
@@ -116,7 +131,7 @@ export const LEARNING_MODULES = [
     events: ALGO_EVENTS,
   },
   {
-    id: 'E',
+    id: 'F',
     name: 'SIP Communications',
     description: 'Calls, paging and intercom.',
     title: 'SIP Communications',
@@ -129,7 +144,7 @@ export const LEARNING_MODULES = [
     events: SIP_EVENTS,
   },
   {
-    id: 'F',
+    id: 'G',
     name: 'Email, SMS & Notifications',
     description: 'Keep the right people informed.',
     title: 'Email, SMS & Notifications',
@@ -146,7 +161,7 @@ export const LEARNING_MODULES = [
     ],
   },
   {
-    id: 'G',
+    id: 'H',
     name: 'Webhooks & Integrations',
     description: 'Connect your existing systems.',
     title: 'Webhooks & Integrations',
@@ -159,7 +174,7 @@ export const LEARNING_MODULES = [
     events: WEBHOOK_EVENTS,
   },
   {
-    id: 'H',
+    id: 'I',
     name: 'IoT Devices',
     description: 'Shelly, Bluetooth, MQTT and more.',
     title: 'IoT Devices',
@@ -173,10 +188,10 @@ export const LEARNING_MODULES = [
     events: IOT_EVENTS,
   },
   {
-    id: 'I',
-    name: 'Flows',
+    id: 'J',
+    name: 'Build a Flow',
     description: 'Bring everything together.',
-    title: 'Flows',
+    title: 'Build a Flow',
     lede: 'Combine a trigger and the actions you want to see.',
     body: 'Pick a simulated trigger, choose the outcomes, and run the flow. This builder does not save anything to a live Signal Bridge system.',
     takeaway: 'A flow is the path from one event to the actions that should follow it.',

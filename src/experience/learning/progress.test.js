@@ -26,12 +26,65 @@ describe('learning progress', () => {
 });
 
 describe('learning modules', () => {
-  it('lists nine modules from buttons through flows', () => {
-    expect(LEARNING_MODULES.map((module) => module.id)).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']);
+  it('lists ten modules from buttons through the flow builder', () => {
+    expect(LEARNING_MODULES.map((module) => module.id)).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']);
+    expect(LEARNING_MODULES.find((module) => module.id === 'B').name).toBe('Flows');
+    expect(LEARNING_MODULES.find((module) => module.id === 'C').name).toBe('External Events & Sensors');
+    expect(LEARNING_MODULES.find((module) => module.id === 'J').kind).toBe('composer');
   });
 
-  it('keeps module H on practical IoT integrations', () => {
-    const iot = LEARNING_MODULES.find((module) => module.id === 'H');
+  it('introduces four example flows before the sensor module', () => {
+    const flows = LEARNING_MODULES.find((module) => module.id === 'B');
+    expect(flows.events.map((event) => event.label)).toEqual([
+      'Water Leak Response',
+      'Emergency Response',
+      'Equipment Failure Monitoring',
+      'School Lockdown',
+    ]);
+    expect(flows.events.map((event) => event.lessonSteps)).toEqual([
+      [
+        'Send SMS to maintenance',
+        'Wait 2 minutes for acknowledgment',
+        'If none, call supervisor',
+        'Activate strobe',
+      ],
+      [
+        'Activate SIP paging',
+        'Flash strobes',
+        'Notify staff',
+        'Wait for acknowledgment',
+        'If none, call security',
+      ],
+      [
+        'Send temperature warning',
+        'Wait and recheck temperature',
+        'Notify technician',
+        'If unresolved, escalate to maintenance supervisor',
+      ],
+      [
+        'Activate emergency paging',
+        'Flash strobes',
+        'Send staff notifications',
+        'Collect acknowledgments',
+        'Wait for authorized All-Clear',
+        'Announce All-Clear',
+        'Update Algo displays',
+      ],
+    ]);
+    expect(flows.events[0].actions.map((action) => action.type)).toEqual(['sms', 'wait', 'phone', 'strobe']);
+    expect(flows.events[3].actions.map((action) => action.type)).toEqual([
+      'paging',
+      'strobe',
+      'notification',
+      'wait',
+      'wait',
+      'paging',
+      'display',
+    ]);
+  });
+
+  it('keeps module I on practical IoT integrations', () => {
+    const iot = LEARNING_MODULES.find((module) => module.id === 'I');
     const blob = JSON.stringify(iot);
     expect(blob).toMatch(/Shelly/);
     expect(blob).toMatch(/Bluetooth/);

@@ -1,6 +1,6 @@
 import EventButton from './EventButton';
 
-function EventsPanel({ events, selectedEventId, running, completedEventIds, onSelect, variant = 'list' }) {
+function EventsPanel({ events, selectedEventId, running, completedEventIds, onSelect, variant = 'list', hint }) {
   const tiles = variant === 'tiles';
   return (
     <section
@@ -11,7 +11,7 @@ function EventsPanel({ events, selectedEventId, running, completedEventIds, onSe
     >
       <div className="mb-4">
         <h2 className="text-base font-semibold text-slate-900">Event</h2>
-        <p className="text-sm text-slate-500">{tiles ? 'Choose a button.' : 'Start something.'}</p>
+        <p className="text-sm text-slate-500">{hint || (tiles ? 'Choose a button.' : 'Start something.')}</p>
       </div>
       <div className={tiles ? 'grid grid-cols-2 content-start gap-3' : 'flex flex-1 flex-col gap-3 overflow-y-auto'}>
         {events.map((event) => (

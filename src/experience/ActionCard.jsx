@@ -10,6 +10,7 @@ const STATUS = {
   paging: { active: 'Paging', done: 'Played' },
   device: { active: 'Sending', done: 'Acknowledged' },
   notification: { active: 'Showing', done: 'Showing' },
+  wait: { active: 'Waiting', done: 'Done' },
 };
 
 function ActionCard({ action, active, done }) {
@@ -35,7 +36,7 @@ function ActionCard({ action, active, done }) {
             live ? 'bg-sky-50 text-sky-600' : 'bg-slate-100 text-slate-400',
           ].join(' ')}
         >
-          <ExperienceIcon name={action.type} className="h-6 w-6" />
+          <ExperienceIcon name={action.type === 'wait' ? 'shift' : action.type} className="h-6 w-6" />
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">

@@ -1,8 +1,25 @@
 import brandLogo from '../assets/signal-bridge-console.png';
 import { bridgeView } from './learning/bridgeView';
 
-function FlowPanel({ event, timeline, omitFlow = false }) {
-  const steps = bridgeView(event, timeline, { omitFlow });
+function lessonState(action, timeline) {
+  if (!action) return 'idle';
+  if (timeline.status === 'complete' || timeline.completedActionIds?.includes(action.id)) return 'done';
+  if (timeline.activeActionIds?.includes(action.id)) return 'active';
+  return 'idle';
+}
+
+function FlowPanel({ event, timeline, omitFlow = false, lesson = false }) {
+  const lessonSteps = lesson && event?.lessonSteps?.length ? event.lessonSteps : null;
+  const steps = lessonSteps
+    ? lessonSteps.map((label, index) => ({
+        id: `lesson-${index}`,
+        label,
+        detail: '',
+        state: lessonState(event.actions?.[index], timeline),
+      }))
+    : lesson
+      ? []
+      : bridgeView(event, timeline, { omitFlow });
   const live = timeline.status === 'running' || timeline.status === 'complete';
 
   return (
@@ -12,21 +29,24 @@ function FlowPanel({ event, timeline, omitFlow = false }) {
     >
       <div className="mb-2">
         <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
-        <p className="text-sm text-slate-500">Processes the event.</p>
+        <p className="text-sm text-slate-500">{lesson ? 'Follows the flow.' : 'Processes the event.'}</p>
       </div>
 
-      <div className="relative flex flex-1 flex-col items-center justify-center py-4">
-        <div className="sb-learn__logo-glow flex h-36 w-36 items-center justify-center rounded-[2rem]">
+      <div className={['relative flex flex-col items-center justify-center', lesson ? 'py-2' : 'flex-1 py-4'].join(' ')}>
+        <div className={['sb-learn__logo-glow flex items-center justify-center rounded-[2rem]', lesson ? 'h-20 w-20' : 'h-36 w-36'].join(' ')}>
           <img
             src={brandLogo}
             alt="Signal Bridge logo"
-            className={['h-24 w-24 object-contain', live ? 'sb-experience__pulse' : ''].join(' ')}
+            className={[lesson ? 'h-14 w-14' : 'h-24 w-24', 'object-contain', live ? 'sb-experience__pulse' : ''].join(' ')}
           />
         </div>
       </div>
 
       <ol className="rounded-2xl bg-[#10243d] p-4 text-white" aria-live="polite">
-        {steps.map((step) => (
+        {lesson && !lessonSteps && (
+          <li className="py-1.5 text-sm text-slate-400">Choose a flow to see its steps.</li>
+        )}
+        {steps.map((step, index) => (
           <li key={step.id} data-step={step.id} data-state={step.state} className="flex gap-3 py-1.5">
             <span
               className={[
@@ -38,15 +58,17 @@ function FlowPanel({ event, timeline, omitFlow = false }) {
               ].join(' ')}
               aria-hidden="true"
             >
-              {step.state === 'idle' ? '' : '✓'}
+              {step.state === 'idle' ? (lessonSteps ? index + 1 : '') : '✓'}
             </span>
             <span className="min-w-0">
               <span className={['block text-sm font-semibold', step.state === 'idle' ? 'text-slate-400' : 'text-white'].join(' ')}>
                 {step.label}
               </span>
-              <span className={['block text-xs', step.state === 'idle' ? 'text-slate-500' : 'text-slate-300'].join(' ')}>
-                {step.detail}
-              </span>
+              {step.detail ? (
+                <span className={['block text-xs', step.state === 'idle' ? 'text-slate-500' : 'text-slate-300'].join(' ')}>
+                  {step.detail}
+                </span>
+              ) : null}
             </span>
           </li>
         ))}

@@ -170,7 +170,7 @@ function Experience() {
             ) : (
               <EventsPanel
                 events={catalogEvents}
-                variant={module.kind === 'buttons' ? 'tiles' : 'list'}
+                variant={module.kind === 'buttons' || module.tileEvents ? 'tiles' : 'list'}
                 selectedEventId={state.eventId}
                 running={running}
                 completedEventIds={completedEventIds}

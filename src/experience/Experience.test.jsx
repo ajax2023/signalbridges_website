@@ -64,7 +64,11 @@ describe('experience learning page', () => {
     renderExperience();
     fireEvent.click(screen.getByRole('button', { name: /External Events & Sensors/i }));
     expect(screen.getByRole('heading', { level: 1, name: 'External Events & Sensors' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Water leak/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Water leak/i }).querySelector('img').getAttribute('src')).toMatch(/WATER/i);
+    expect(screen.getByRole('button', { name: /Door opened/i }).querySelector('img').getAttribute('src')).toMatch(/DOOR/i);
+    expect(screen.getByRole('button', { name: /High temperature/i }).querySelector('img').getAttribute('src')).toMatch(/TEMPERATURE/i);
+    expect(screen.getByRole('button', { name: /Motion detected/i }).querySelector('img').getAttribute('src')).toMatch(/MOTION/i);
+    expect(screen.queryByRole('button', { name: /Device offline/i })).toBeNull();
     expect(screen.queryByText(/modules completed/)).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: /IoT Devices/i }));

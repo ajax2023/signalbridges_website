@@ -31,7 +31,7 @@ function PhysicalFace({ tone }) {
 function TileGlyph({ event }) {
   const src = experienceIconSrc(event.iconFile);
   if (src) {
-    return <img src={src} alt="" className="h-14 w-14 object-contain" />;
+    return <img src={src} alt="" className="h-16 w-16 object-contain" />;
   }
   const tone = event.tone;
   const bubble =

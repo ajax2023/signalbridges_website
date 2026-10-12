@@ -23,12 +23,19 @@ describe('scenario registry', () => {
     expect(getScenario('missing').id).toBe('explore');
   });
 
-  it('gives each scenario five distinct events', () => {
+  it('gives each scenario distinct events', () => {
     for (const scenario of SCENARIO_LIST) {
-      expect(scenario.events).toHaveLength(5);
+      const expected = scenario.id === 'sensors' ? 4 : 5;
+      expect(scenario.events).toHaveLength(expected);
       const ids = scenario.events.map((e) => e.id);
-      expect(new Set(ids).size).toBe(5);
+      expect(new Set(ids).size).toBe(expected);
     }
+    expect(SENSORS_SCENARIO.events.map((event) => event.id)).toEqual([
+      'water-leak',
+      'door-opened',
+      'high-temperature',
+      'motion-detected',
+    ]);
   });
 });
 

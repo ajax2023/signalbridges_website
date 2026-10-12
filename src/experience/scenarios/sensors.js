@@ -5,10 +5,11 @@ export const SENSORS_SCENARIO = {
   title: 'Connected sensors',
   shortTitle: 'Sensors',
   subtitle: 'IoT & facility sensors',
-  description: 'Leak, access, thermal, offline, and motion events.',
+  description: 'Water, door, temperature, and motion sensors.',
   theme: 'sensors',
   events: [
-    eventDef({
+    {
+      ...eventDef({
       id: 'water-leak',
       label: 'Water leak',
       icon: 'water',
@@ -41,7 +42,10 @@ export const SENSORS_SCENARIO = {
         },
       ],
     }),
-    eventDef({
+      iconFile: 'water-sensor',
+    },
+    {
+      ...eventDef({
       id: 'door-opened',
       label: 'Door opened',
       icon: 'door',
@@ -74,7 +78,10 @@ export const SENSORS_SCENARIO = {
         },
       ],
     }),
-    eventDef({
+      iconFile: 'door-sensor',
+    },
+    {
+      ...eventDef({
       id: 'high-temperature',
       label: 'High temperature',
       icon: 'temperature',
@@ -107,40 +114,10 @@ export const SENSORS_SCENARIO = {
         },
       ],
     }),
-    eventDef({
-      id: 'device-offline',
-      label: 'Device offline',
-      icon: 'offline',
-      accent: 'rose',
-      ingressLabel: 'Edge agent · Building 3',
-      received: 'Heartbeat missed (90s)',
-      conditions: 'Peer agents healthy · WAN up',
-      routing: 'Edge health response flow',
-      dispatch: 'Escalate · Call · Page · Failover',
-      actionList: [
-        {
-          type: 'email',
-          label: 'Email sent',
-          result: 'Sent to platform-ops@example.com',
-        },
-        {
-          type: 'phone',
-          label: 'Phone call initiated',
-          result: 'Call to platform on-call',
-        },
-        {
-          type: 'paging',
-          label: 'Speaker paging',
-          result: 'Ops page: Building 3 agent offline',
-        },
-        {
-          type: 'device',
-          label: 'Device command executed',
-          result: 'Standby agent promotion requested',
-        },
-      ],
-    }),
-    eventDef({
+      iconFile: 'temperature-sensor',
+    },
+    {
+      ...eventDef({
       id: 'motion-detected',
       label: 'Motion detected',
       icon: 'motion',
@@ -173,5 +150,7 @@ export const SENSORS_SCENARIO = {
         },
       ],
     }),
+      iconFile: 'motion-sensor',
+    },
   ],
 };

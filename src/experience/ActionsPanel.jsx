@@ -1,7 +1,16 @@
 import ActionCard from './ActionCard';
+import { useStaggeredCount } from './useStaggeredCount';
 
-function ActionsPanel({ event, timeline, emptyMessage }) {
-  const { activeActionIds, completedActionIds } = timeline;
+const REVEAL_MS = 150;
+
+function ActionsPanel({ event, timeline, emptyMessage, stagger = false }) {
+  const { activeActionIds, completedActionIds, status, runId } = timeline;
+  const shownCount = useStaggeredCount(stagger && event ? `${event.id}:${runId}` : '', event?.actions?.length || 0, {
+    intervalMs: REVEAL_MS,
+    delayMs: 120,
+    immediate: status === 'complete',
+  });
+  const actions = stagger ? (event?.actions || []).slice(0, shownCount) : event?.actions || [];
 
   return (
     <section className="flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-5" aria-label="Actions">
@@ -19,9 +28,9 @@ function ActionsPanel({ event, timeline, emptyMessage }) {
         </div>
       )}
 
-      {event && (
+      {event && actions.length > 0 && (
         <ul className="flex flex-1 flex-col gap-3 overflow-y-auto" aria-live="polite">
-          {event.actions.map((action) => (
+          {actions.map((action) => (
             <ActionCard
               key={action.id}
               action={action}

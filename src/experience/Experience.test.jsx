@@ -162,7 +162,13 @@ describe('experience learning page', () => {
     expect(screen.getByText('Choose a flow to see its steps.')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: /Water Leak Response/i }));
     expect(screen.getByText('Send SMS to maintenance')).toBeTruthy();
+    expect(screen.queryByText('If none, call supervisor')).toBeNull();
+    act(() => {
+      vi.advanceTimersByTime(360);
+    });
     expect(screen.getByText('If none, call supervisor')).toBeTruthy();
+    expect(screen.getByRole('contentinfo').textContent).toMatch(/Demonstration only/);
+    expect(screen.queryByText(/^Simulation —/)).toBeNull();
     act(() => {
       vi.runAllTimers();
     });

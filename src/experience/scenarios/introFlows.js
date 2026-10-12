@@ -49,7 +49,7 @@ const INTRO_FLOW_DEFS = [
         flow: 'Activate SIP paging',
         type: 'paging',
         action: 'SIP paging',
-        result: 'Paging the zone.',
+        result: 'Paging the zone, Play a message.',
       },
       {
         flow: 'Flash strobes',
@@ -182,7 +182,7 @@ function buildIntroFlow(def) {
         result: step.result,
         ...(step.displayText ? { displayText: step.displayText } : {}),
       })),
-      timings: { stepMs: 420, actionStaggerMs: 700, completeHoldMs: 180 },
+      timings: { stepMs: 50, actionStaggerMs: 160, completeHoldMs: 80 },
     }),
     iconFile: def.iconFile,
     lessonSteps: def.steps.map((step) => step.flow),

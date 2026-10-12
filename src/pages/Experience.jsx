@@ -111,7 +111,8 @@ function Experience() {
         }}
       />
 
-      <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="flex w-full flex-col gap-5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
           <button
             type="button"
@@ -131,11 +132,6 @@ function Experience() {
               </div>
               <p className="mt-3 text-base text-slate-600">{module.lede}</p>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-500">{module.body}</p>
-              {module.simulated && (
-                <p className="mt-3 inline-flex max-w-3xl rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold leading-relaxed text-amber-800">
-                  Simulation — {module.simulationNote}
-                </p>
-              )}
             </div>
 
             {module.kind === 'buttons' && (
@@ -187,6 +183,7 @@ function Experience() {
             <ActionsPanel
               event={selectedEvent}
               timeline={state}
+              stagger={module.kind === 'flows'}
               emptyMessage={
                 module.kind === 'buttons'
                   ? 'Press a button. Its one action shows up here, and it stays in this browser.'
@@ -213,13 +210,14 @@ function Experience() {
             />
           )}
 
-          <p className="text-center text-xs text-slate-500">
-            Demonstration only. No calls, text messages, emails, pages, or device commands leave this browser.
-          </p>
           <div role="status" className="sr-only">
             {statusText}
           </div>
         </div>
+        </div>
+        <footer className="shrink-0 border-t border-slate-200 bg-white px-4 py-2 text-center text-xs text-slate-500">
+          Demonstration only. No calls, text messages, emails, pages, or device commands leave this browser.
+        </footer>
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
-import brandLogo from '../assets/signal-bridge-console.png';
 import { bridgeView } from './learning/bridgeView';
+import { useStaggeredCount } from './useStaggeredCount';
+
+const REVEAL_MS = 150;
 
 function lessonState(action, timeline) {
   if (!action) return 'idle';
@@ -20,59 +22,61 @@ function FlowPanel({ event, timeline, omitFlow = false, lesson = false }) {
     : lesson
       ? []
       : bridgeView(event, timeline, { omitFlow });
-  const live = timeline.status === 'running' || timeline.status === 'complete';
+  const revealKey = lessonSteps ? `${event.id}:${timeline.runId}` : '';
+  const shownCount = useStaggeredCount(revealKey, steps.length, {
+    intervalMs: REVEAL_MS,
+    immediate: timeline.status === 'complete',
+  });
+  const visibleSteps = lessonSteps ? steps.slice(0, shownCount) : steps;
 
   return (
     <section
       className="relative flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-5"
       aria-label="Signal Bridge"
     >
-      <div className="mb-2">
+      <div className="mb-4">
         <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
         <p className="text-sm text-slate-500">{lesson ? 'Follows the flow.' : 'Processes the event.'}</p>
       </div>
 
-      <div className={['relative flex flex-col items-center justify-center', lesson ? 'py-2' : 'flex-1 py-4'].join(' ')}>
-        <div className={['sb-learn__logo-glow flex items-center justify-center rounded-[2rem]', lesson ? 'h-20 w-20' : 'h-36 w-36'].join(' ')}>
-          <img
-            src={brandLogo}
-            alt="Signal Bridge logo"
-            className={[lesson ? 'h-14 w-14' : 'h-24 w-24', 'object-contain', live ? 'sb-experience__pulse' : ''].join(' ')}
-          />
+      {lesson && !lessonSteps && (
+        <div className="flex flex-1 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-[#f4f7fb] px-4 py-10 text-center">
+          <p className="max-w-xs text-sm text-slate-500">Choose a flow to see its steps.</p>
         </div>
-      </div>
+      )}
 
-      <ol className="rounded-2xl bg-[#10243d] p-4 text-white" aria-live="polite">
-        {lesson && !lessonSteps && (
-          <li className="py-1.5 text-sm text-slate-400">Choose a flow to see its steps.</li>
-        )}
-        {steps.map((step, index) => (
-          <li key={step.id} data-step={step.id} data-state={step.state} className="flex gap-3 py-1.5">
-            <span
+      {visibleSteps.length > 0 && (
+        <ol className="flex flex-1 flex-col gap-3" aria-live="polite">
+          {visibleSteps.map((step, index) => (
+            <li
+              key={step.id}
+              data-step={step.id}
+              data-state={step.state}
               className={[
-                'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.7rem] font-bold',
-                step.state === 'idle'
-                  ? 'bg-white/10 text-slate-500'
-                  : 'bg-emerald-400 text-[#10243d]',
-                step.state === 'active' ? 'sb-experience__step-active' : '',
+                'sb-reveal flex items-center gap-3 rounded-2xl bg-[#f4f7fb] px-3 py-3',
+                step.state === 'active' ? 'ring-2 ring-blue-500' : '',
               ].join(' ')}
-              aria-hidden="true"
             >
-              {step.state === 'idle' ? (lessonSteps ? index + 1 : '') : '✓'}
-            </span>
-            <span className="min-w-0">
-              <span className={['block text-sm font-semibold', step.state === 'idle' ? 'text-slate-400' : 'text-white'].join(' ')}>
-                {step.label}
+              <span
+                className={[
+                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-bold',
+                  step.state === 'done' ? 'bg-emerald-500 text-white' : 'border border-slate-300 bg-white text-slate-500',
+                  step.state === 'active' ? 'sb-experience__step-active' : '',
+                ].join(' ')}
+                aria-hidden="true"
+              >
+                {step.state === 'done' ? '✓' : lessonSteps ? index + 1 : ''}
               </span>
-              {step.detail ? (
-                <span className={['block text-xs', step.state === 'idle' ? 'text-slate-500' : 'text-slate-300'].join(' ')}>
-                  {step.detail}
-                </span>
-              ) : null}
-            </span>
-          </li>
-        ))}
-      </ol>
+              <span className="min-w-0">
+                <span className="block text-sm font-medium text-slate-700">{step.label}</span>
+                {step.detail ? (
+                  <span className="mt-0.5 block text-xs text-slate-500">{step.detail}</span>
+                ) : null}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }

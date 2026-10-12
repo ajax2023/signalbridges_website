@@ -21,7 +21,7 @@ function ActionCard({ action, active, done }) {
   return (
     <li
       className={[
-        'rounded-2xl border bg-white px-3 py-3 shadow-sm',
+        'sb-reveal rounded-2xl border bg-white px-3 py-3 shadow-sm',
         live ? 'sb-experience__action-pop border-slate-200' : 'border-slate-200 opacity-60',
         done ? 'border-emerald-200' : '',
         active ? 'border-sky-300' : '',

@@ -10,6 +10,11 @@ import waterLeak from '../assets/experience-icons/Water Leak.png';
 import emergencyResponse from '../assets/experience-icons/Emergency Response.png';
 import equipmentFailure from '../assets/experience-icons/Equipment Failure.png';
 import lockdown from '../assets/experience-icons/LockDown ICON.png';
+import schoolBells from '../assets/experience-icons/School Bells.png';
+import morningAnnouncement from '../assets/experience-icons/Morning Announcement.png';
+import snowDayClosure from '../assets/experience-icons/Snow Day Closure.png';
+import emergencyNotification from '../assets/experience-icons/Emergency Notification.png';
+import staffAnnouncement from '../assets/experience-icons/Staff Announcement.png';
 
 /** Artwork in src/assets/experience-icons/, keyed by file name without the extension. */
 const icons = {
@@ -25,6 +30,11 @@ const icons = {
   'emergency-response': emergencyResponse,
   'equipment-failure': equipmentFailure,
   lockdown,
+  'school-bells': schoolBells,
+  'morning-announcement': morningAnnouncement,
+  'snow-day-closure': snowDayClosure,
+  'emergency-notification': emergencyNotification,
+  'staff-announcement': staffAnnouncement,
 };
 
 export function experienceIconSrc(name) {

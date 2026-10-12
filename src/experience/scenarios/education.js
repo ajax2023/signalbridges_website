@@ -8,7 +8,8 @@ export const EDUCATION_SCENARIO = {
   description: 'Bells, announcements, closures, and emergency notifications.',
   theme: 'education',
   events: [
-    eventDef({
+    {
+      ...eventDef({
       id: 'school-bell',
       label: 'School bell',
       icon: 'bell',
@@ -31,7 +32,10 @@ export const EDUCATION_SCENARIO = {
         },
       ],
     }),
-    eventDef({
+      iconFile: 'school-bells',
+    },
+    {
+      ...eventDef({
       id: 'morning-announcement',
       label: 'Morning announcement',
       icon: 'announcement',
@@ -54,7 +58,10 @@ export const EDUCATION_SCENARIO = {
         },
       ],
     }),
-    eventDef({
+      iconFile: 'morning-announcement',
+    },
+    {
+      ...eventDef({
       id: 'snow-day',
       label: 'Snow day closure',
       icon: 'snow',
@@ -82,7 +89,10 @@ export const EDUCATION_SCENARIO = {
         },
       ],
     }),
-    eventDef({
+      iconFile: 'snow-day-closure',
+    },
+    {
+      ...eventDef({
       id: 'emergency-notification',
       label: 'Emergency notification',
       icon: 'emergency',
@@ -116,7 +126,10 @@ export const EDUCATION_SCENARIO = {
       ],
       timings: { stepMs: 640, actionStaggerMs: 320, completeHoldMs: 180 },
     }),
-    eventDef({
+      iconFile: 'emergency-notification',
+    },
+    {
+      ...eventDef({
       id: 'staff-announcement',
       label: 'Staff announcement',
       icon: 'staff',
@@ -139,5 +152,7 @@ export const EDUCATION_SCENARIO = {
         },
       ],
     }),
+      iconFile: 'staff-announcement',
+    },
   ],
 };

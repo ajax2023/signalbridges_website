@@ -111,6 +111,8 @@ export const LEARNING_MODULES = [
     title: 'Scheduled & Automated',
     lede: 'Bells, announcements, and notices can run without someone pressing a button.',
     body: 'These examples reuse the education demonstrations: a bell schedule, morning announcement, closure notice, emergency notification, and staff message.',
+    tileEvents: true,
+    eventHint: 'Choose an event.',
     takeaway: 'A schedule is just another event. Once it fires, the flow and actions work the same way.',
     kind: 'events',
     simulated: true,

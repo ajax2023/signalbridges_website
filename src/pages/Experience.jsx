@@ -167,7 +167,7 @@ function Experience() {
               <EventsPanel
                 events={catalogEvents}
                 variant={module.kind === 'buttons' || module.tileEvents ? 'tiles' : 'list'}
-                hint={module.kind === 'flows' ? 'Choose a flow.' : undefined}
+                hint={module.eventHint || (module.kind === 'flows' ? 'Choose a flow.' : undefined)}
                 selectedEventId={state.eventId}
                 running={running}
                 completedEventIds={completedEventIds}

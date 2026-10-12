@@ -51,6 +51,11 @@ export function clearModuleCompletions(progress, moduleId) {
   return { modules };
 }
 
+export function clearAllCompletions(progress) {
+  if (!progress.modules || Object.keys(progress.modules).length === 0) return progress;
+  return emptyProgress();
+}
+
 export function isModuleComplete(progress, moduleId) {
   return (progress.modules?.[moduleId]?.events || []).length > 0;
 }
@@ -80,5 +85,14 @@ export function useLearningProgress() {
     });
   }, []);
 
-  return { progress, recordCompletion, clearModule };
+  const clearAll = useCallback(() => {
+    setProgress((prev) => {
+      const next = clearAllCompletions(prev);
+      if (next === prev) return prev;
+      saveProgress(next);
+      return next;
+    });
+  }, []);
+
+  return { progress, recordCompletion, clearModule, clearAll };
 }

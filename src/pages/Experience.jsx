@@ -26,7 +26,7 @@ function Experience() {
   const seenRunRef = useRef(null);
 
   const module = getModule(moduleId);
-  const { progress, recordCompletion, clearModule } = useLearningProgress();
+  const { progress, recordCompletion, clearAll } = useLearningProgress();
   const { state, play, replay, reset } = useExperienceTimeline();
   const catalogEvents = useMemo(
     () => eventsForModule(module, 'basic-alert'),
@@ -40,6 +40,8 @@ function Experience() {
 
   const running = state.status === 'running';
   const completedEventIds = progress.modules[module.id]?.events || [];
+  const hasAnyCompletion = Object.values(progress.modules).some((entry) => (entry?.events || []).length > 0);
+  const canReset = state.status !== 'idle' || hasAnyCompletion;
 
   useDemoCues(soundOn, selectedEvent, state);
 
@@ -71,7 +73,7 @@ function Experience() {
 
   function handleReset() {
     setComposerEvent(null);
-    clearModule(moduleId);
+    clearAll();
     reset();
   }
 
@@ -134,16 +136,14 @@ function Experience() {
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-500">{module.body}</p>
             </div>
 
-            {module.kind === 'buttons' && (
-              <button
-                type="button"
-                onClick={handleReset}
-                disabled={state.status === 'idle' && completedEventIds.length === 0}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              >
-                Reset
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={!canReset}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              Reset
+            </button>
           </div>
 
           <div
@@ -197,14 +197,12 @@ function Experience() {
           {module.kind !== 'buttons' && (
             <ScenarioPicker
               title="Demonstration controls"
-              description="Replay the last event, reset the stage, or turn sound on. Sound stays off until you enable it."
+              description="Replay the last event, or turn sound on. Sound stays off until you enable it."
               scenarios={[]}
               activeId=""
               onChange={() => {}}
               onReplay={handleReplay}
-              onReset={handleReset}
               canReplay={Boolean(selectedEvent) && !running}
-              canReset={state.status !== 'idle'}
               soundOn={soundOn}
               onToggleSound={() => setSoundOn((value) => !value)}
             />

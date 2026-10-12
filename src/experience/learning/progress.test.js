@@ -3,6 +3,7 @@ import { LEARNING_MODULES } from './modules';
 import { buildButtonEvents } from '../scenarios/buttons';
 import {
   addCompletion,
+  clearAllCompletions,
   completedCount,
   emptyProgress,
   isModuleComplete,
@@ -22,6 +23,13 @@ describe('learning progress', () => {
     expect(isModuleComplete(once, 'A')).toBe(true);
     expect(isModuleComplete(once, 'B')).toBe(false);
     expect(completedCount(once, ['A', 'B', 'C'])).toBe(1);
+  });
+
+  it('clears every module at once', () => {
+    const progress = addCompletion(addCompletion(emptyProgress(), 'A', 'call-help'), 'C', 'water-leak');
+    const empty = emptyProgress();
+    expect(clearAllCompletions(progress)).toEqual(empty);
+    expect(clearAllCompletions(empty)).toBe(empty);
   });
 });
 

@@ -137,6 +137,28 @@ describe('experience learning page', () => {
     second.unmount();
   });
 
+  it('clears completion marks on every module', () => {
+    renderExperience();
+    fireEvent.click(screen.getByRole('button', { name: /Call for help/i }));
+    act(() => {
+      vi.runAllTimers();
+    });
+    fireEvent.click(screen.getByRole('button', { name: /One event. Several steps/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Water Leak Response/i }));
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(screen.getByRole('button', { name: /Water Leak Response/i }).textContent).toMatch(/Completed/);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+    expect(screen.getByRole('button', { name: /Water Leak Response/i }).textContent).not.toMatch(/Completed/);
+    expect(screen.getByRole('button', { name: /One event. Several steps/i }).textContent).toMatch(/Not completed/);
+
+    fireEvent.click(screen.getByRole('button', { name: /Buttons & Actions/i }));
+    expect(screen.getByRole('button', { name: /Call for help/i }).textContent).not.toMatch(/Completed/);
+    expect(JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)).modules).toEqual({});
+  });
+
   it('completes a reduced-motion run without a long wait', () => {
     vi.stubGlobal(
       'matchMedia',

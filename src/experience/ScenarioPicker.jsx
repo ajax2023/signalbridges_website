@@ -48,9 +48,7 @@ function ScenarioPicker({
   activeId,
   onChange,
   onReplay,
-  onReset,
   canReplay,
-  canReset,
   soundOn,
   onToggleSound,
 }) {
@@ -69,14 +67,6 @@ function ScenarioPicker({
             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
             Replay
-          </button>
-          <button
-            type="button"
-            onClick={onReset}
-            disabled={!canReset}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          >
-            Reset
           </button>
           <button
             type="button"

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export const PROGRESS_STORAGE_KEY = 'sb-learning-progress-v1';
+export const PROGRESS_STORAGE_KEY = 'sb-learning-progress-v2';
 
 export function emptyProgress() {
   return { modules: {} };

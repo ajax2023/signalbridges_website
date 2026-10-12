@@ -1,19 +1,16 @@
-/**
- * Drop replacement artwork in src/assets/experience-icons/.
- * File name, without the extension, must match iconFile on the button:
- * call-for-help, message-someone, email-someone, notify-someone.
- * png, svg, webp, or jpg.
- */
-const iconModules = import.meta.glob('../assets/experience-icons/*.{png,svg,webp,jpg,jpeg}', {
-  eager: true,
-  import: 'default',
-});
+import phone from '../assets/experience-icons/phone.png';
+import sms from '../assets/experience-icons/sms.png';
+import envelope from '../assets/experience-icons/envelope.webp';
+import message from '../assets/experience-icons/message.png';
+
+/** Artwork in src/assets/experience-icons/, keyed by file name without the extension. */
+const icons = {
+  phone,
+  sms,
+  envelope,
+  message,
+};
 
 export function experienceIconSrc(name) {
-  if (!name) return null;
-  const match = Object.entries(iconModules).find(([path]) => {
-    const file = path.split('/').pop().replace(/\.[^.]+$/, '');
-    return file === name;
-  });
-  return match ? match[1] : null;
+  return icons[name] || null;
 }

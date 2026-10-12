@@ -31,7 +31,7 @@ function PhysicalFace({ tone }) {
 function TileGlyph({ event }) {
   const src = experienceIconSrc(event.iconFile);
   if (src) {
-    return <img src={src} alt="" className="h-16 w-16 object-contain sm:h-20 sm:w-20" />;
+    return <img src={src} alt="" className="h-14 w-14 object-contain" />;
   }
   const tone = event.tone;
   const bubble =
@@ -61,9 +61,9 @@ function EventButton({ event, selected, running, completed, onSelect, variant = 
         disabled={running}
         aria-pressed={selected}
         className={[
-          'relative flex min-h-[9.5rem] flex-col items-center justify-center gap-3 rounded-3xl border bg-white/80 px-3 py-5 text-center shadow-sm transition-colors sm:min-h-[11rem]',
+          'relative flex flex-col items-center justify-start gap-2 rounded-2xl bg-[#f4f7fb] px-2 py-3 text-center transition-colors',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
-          selected ? 'border-blue-500 ring-2 ring-blue-500/25' : 'border-slate-200/80 hover:border-slate-300 hover:bg-white',
+          selected ? 'ring-2 ring-blue-500' : 'hover:bg-[#e8eef5]',
           running && !selected ? 'opacity-50' : '',
         ].join(' ')}
       >

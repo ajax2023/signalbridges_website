@@ -150,57 +150,43 @@ function Experience() {
             )}
           </div>
 
-          <div className="flex flex-col gap-4" aria-busy={running}>
-            {module.kind === 'buttons' ? (
+          <div
+            className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3 [&>*]:min-w-0"
+            aria-busy={running}
+          >
+            {module.kind === 'composer' ? (
+              <FlowComposer
+                triggerId={triggerId}
+                actionTypes={actionTypes}
+                running={running}
+                onTrigger={(next) => {
+                  setTriggerId(next);
+                  setComposerEvent(null);
+                  reset();
+                }}
+                onToggleAction={handleToggleAction}
+                onRun={handleRunFlow}
+              />
+            ) : (
               <EventsPanel
                 events={catalogEvents}
-                variant="tiles"
+                variant={module.kind === 'buttons' ? 'tiles' : 'list'}
                 selectedEventId={state.eventId}
                 running={running}
                 completedEventIds={completedEventIds}
                 onSelect={handleSelect}
               />
-            ) : null}
-            <div
-              className={
+            )}
+            <FlowPanel event={selectedEvent} timeline={state} omitFlow={module.kind === 'buttons'} />
+            <ActionsPanel
+              event={selectedEvent}
+              timeline={state}
+              emptyMessage={
                 module.kind === 'buttons'
-                  ? 'grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2 [&>*]:min-w-0'
-                  : 'grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3 [&>*]:min-w-0'
+                  ? 'Press a button. Its one action shows up here, and it stays in this browser.'
+                  : undefined
               }
-            >
-              {module.kind === 'composer' ? (
-                <FlowComposer
-                  triggerId={triggerId}
-                  actionTypes={actionTypes}
-                  running={running}
-                  onTrigger={(next) => {
-                    setTriggerId(next);
-                    setComposerEvent(null);
-                    reset();
-                  }}
-                  onToggleAction={handleToggleAction}
-                  onRun={handleRunFlow}
-                />
-              ) : module.kind === 'buttons' ? null : (
-                <EventsPanel
-                  events={catalogEvents}
-                  selectedEventId={state.eventId}
-                  running={running}
-                  completedEventIds={completedEventIds}
-                  onSelect={handleSelect}
-                />
-              )}
-              <FlowPanel event={selectedEvent} timeline={state} omitFlow={module.kind === 'buttons'} />
-              <ActionsPanel
-                event={selectedEvent}
-                timeline={state}
-                emptyMessage={
-                  module.kind === 'buttons'
-                    ? 'Press a button. Its one action shows up here, and it stays in this browser.'
-                    : undefined
-                }
-              />
-            </div>
+            />
           </div>
 
           {module.kind !== 'buttons' && (

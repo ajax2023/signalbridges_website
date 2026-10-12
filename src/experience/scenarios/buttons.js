@@ -8,7 +8,7 @@ export const DEMO_BUTTONS = [
     blurb: 'Call the help number.',
     tone: 'blue',
     icon: 'phone',
-    iconFile: 'call-for-help',
+    iconFile: 'phone',
     action: { type: 'phone', label: 'Calling help number', result: 'Calling the help number.' },
   },
   {
@@ -17,7 +17,7 @@ export const DEMO_BUTTONS = [
     blurb: 'Send a text message.',
     tone: 'sky',
     icon: 'sms',
-    iconFile: 'message-someone',
+    iconFile: 'sms',
     action: { type: 'sms', label: 'SMS someone', result: 'Sending a text to someone.' },
   },
   {
@@ -26,7 +26,7 @@ export const DEMO_BUTTONS = [
     blurb: 'Send an email.',
     tone: 'amber',
     icon: 'email',
-    iconFile: 'email-someone',
+    iconFile: 'envelope',
     action: { type: 'email', label: 'Email someone', result: 'Sending an email to someone.' },
   },
   {
@@ -35,7 +35,7 @@ export const DEMO_BUTTONS = [
     blurb: 'Show a notification.',
     tone: 'green',
     icon: 'notification',
-    iconFile: 'notify-someone',
+    iconFile: 'message',
     action: { type: 'notification', label: 'Notification', result: 'A notification is showing.' },
   },
 ];

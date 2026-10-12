@@ -172,8 +172,10 @@ describe('experience learning page', () => {
     fireEvent.click(toggle);
     expect(screen.getByRole('navigation', { name: 'Learning modules' }).className).not.toContain('hidden');
     const stage = document.querySelector('[aria-busy]');
-    expect(stage.className).toContain('flex');
-    expect(document.querySelector('[aria-label="Event"] .grid').className).toContain('sm:grid-cols-4');
+    expect(stage.className).toContain('grid-cols-1');
+    expect(stage.className).toContain('lg:grid-cols-3');
+    expect(document.querySelector('[aria-label="Event"] .grid').className).toContain('grid-cols-2');
+    expect(screen.getByRole('button', { name: /Call for help/i }).querySelector('img').getAttribute('src')).toMatch(/phone/);
     expect(document.querySelector('.sb-learn').className).toContain('overflow-hidden');
   });
 

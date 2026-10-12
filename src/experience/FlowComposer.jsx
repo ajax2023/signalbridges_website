@@ -1,4 +1,5 @@
 import { FLOW_ACTION_OPTIONS, FLOW_TRIGGERS } from './learning/modules';
+import { actionIconSrc } from './experienceIcons';
 
 function FlowComposer({ triggerId, actionTypes, running, onTrigger, onToggleAction, onRun }) {
   return (
@@ -30,6 +31,7 @@ function FlowComposer({ triggerId, actionTypes, running, onTrigger, onToggleActi
         <div className="mt-2 grid grid-cols-2 gap-2">
           {FLOW_ACTION_OPTIONS.map((option) => {
             const checked = actionTypes.includes(option.type);
+            const src = actionIconSrc(option.type);
             return (
               <label key={option.type} className="flex items-center gap-2 rounded-xl border border-slate-200 px-2 py-2 text-sm text-slate-700">
                 <input
@@ -38,6 +40,7 @@ function FlowComposer({ triggerId, actionTypes, running, onTrigger, onToggleActi
                   onChange={() => onToggleAction(option.type)}
                   className="h-4 w-4 accent-blue-600"
                 />
+                {src && <img src={src} alt="" className="h-6 w-6 object-contain" />}
                 {option.label}
               </label>
             );

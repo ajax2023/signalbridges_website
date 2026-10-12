@@ -2,6 +2,8 @@ import phone from '../assets/experience-icons/phone.png';
 import sms from '../assets/experience-icons/sms.png';
 import envelope from '../assets/experience-icons/envelope.webp';
 import message from '../assets/experience-icons/message.png';
+import paging from '../assets/experience-icons/paging.png';
+import fireAlarm from '../assets/experience-icons/fire-alarm.png';
 import waterSensor from '../assets/experience-icons/WATER SENSOR.png';
 import doorSensor from '../assets/experience-icons/DOOR SENSOR.png';
 import motionSensor from '../assets/experience-icons/MOTION SENSOR.png';
@@ -22,6 +24,8 @@ const icons = {
   sms,
   envelope,
   message,
+  paging,
+  'fire-alarm': fireAlarm,
   'water-sensor': waterSensor,
   'door-sensor': doorSensor,
   'motion-sensor': motionSensor,
@@ -37,6 +41,19 @@ const icons = {
   'staff-announcement': staffAnnouncement,
 };
 
+const actionIcons = {
+  phone: 'phone',
+  sms: 'sms',
+  email: 'envelope',
+  notification: 'message',
+  paging: 'paging',
+  strobe: 'fire-alarm',
+};
+
 export function experienceIconSrc(name) {
   return icons[name] || null;
+}
+
+export function actionIconSrc(type) {
+  return experienceIconSrc(actionIcons[type]);
 }

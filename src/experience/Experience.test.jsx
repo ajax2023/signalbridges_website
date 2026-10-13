@@ -248,14 +248,12 @@ describe('experience header', () => {
         <ExperienceHeader />
       </MemoryRouter>,
     );
+    expect(screen.getByRole('link', { name: 'Overview' }).getAttribute('href')).toBe('/');
     expect(screen.getByRole('link', { name: 'Product' }).getAttribute('href')).toBe('/product');
-    expect(screen.getByRole('link', { name: 'Interactive Demo' }).getAttribute('href')).toBe('/experience');
-    expect(screen.getByRole('link', { name: 'Resources' }).getAttribute('href')).toBe('/downloads');
-    expect(screen.getByRole('link', { name: 'Pricing' }).getAttribute('href')).toBe('/contact?topic=pricing');
-    expect(screen.getByRole('link', { name: 'Request a Demo' }).getAttribute('href')).toBe('/contact?topic=demo');
-
-    fireEvent.click(screen.getByRole('button', { name: 'Solutions' }));
-    expect(screen.getByRole('menuitem', { name: 'Reliability' }).getAttribute('href')).toBe('/reliability');
-    expect(screen.getByRole('menuitem', { name: 'Security' }).getAttribute('href')).toBe('/security');
+    expect(screen.getByRole('link', { name: 'Experience' }).getAttribute('href')).toBe('/experience');
+    expect(screen.getByRole('link', { name: 'Reliability' }).getAttribute('href')).toBe('/reliability');
+    expect(screen.getByRole('link', { name: 'Security' }).getAttribute('href')).toBe('/security');
+    expect(screen.getByRole('link', { name: 'Downloads' }).getAttribute('href')).toBe('/downloads');
+    expect(screen.getByRole('link', { name: 'Contact' }).getAttribute('href')).toBe('/contact');
   });
 });

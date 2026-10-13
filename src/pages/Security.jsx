@@ -21,7 +21,7 @@ const securityLayers = [
     number: '03',
     title: 'Accountable operations',
     items: [
-      'SIP paging records tenant-scoped call lifecycle and outcome information.',
+      'SIP paging records tenant-scoped authorization decisions; lifecycle coverage depends on the deployed backend version.',
       'Configured offline RTP paging writes local Agent audit events.',
       'Logging and audit depth vary by action and deployment configuration.',
     ],

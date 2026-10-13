@@ -61,7 +61,7 @@ function Reliability() {
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
             {[
               'Failures are surfaced when required cloud, Agent, or device dependencies are unavailable.',
-              'SIP paging exposes call lifecycle and outcome information.',
+              'SIP paging logs authorization decisions; final-outcome coverage depends on the deployed backend version and configuration.',
               'Local offline RTP paging writes Agent-side audit events, with optional sync when configured.',
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">

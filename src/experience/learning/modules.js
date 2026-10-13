@@ -68,13 +68,13 @@ export const LEARNING_MODULES = [
   {
     id: 'A',
     name: 'Buttons & Actions',
-    description: 'Simple events. Real results.',
+    description: 'One event. One action.',
     title: 'Buttons & Actions',
     lede: 'Press a button and see the action it triggers.',
     body: 'Call for help, message someone, email someone, or notify someone. Each button triggers one Action. The next module introduces Flows.',
     takeaway: '',
     kind: 'buttons',
-    simulated: false,
+    simulated: true,
   },
   {
     id: 'B',

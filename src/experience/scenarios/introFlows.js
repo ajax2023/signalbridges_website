@@ -49,7 +49,7 @@ const INTRO_FLOW_DEFS = [
         flow: 'Activate SIP paging',
         type: 'paging',
         action: 'SIP paging',
-        result: 'Paging the zone, Play a message.',
+        result: 'Paging the zone. Play a message.',
       },
       {
         flow: 'Flash strobes',

@@ -81,7 +81,7 @@ export const LEARNING_MODULES = [
     name: 'Flows',
     description: 'One event. Several steps.',
     title: 'Flows',
-    lede: 'A flow is the path from one event to the actions that follow.',
+    lede: 'A Flow is a sequence of actions that execute when triggered by an event. Flows can include logic to make decisions, evaluate conditions, wait for responses, and branch into different actions based on the results. A single Flow can coordinate notifications, phone calls, paging, devices, and other systems to automate simple tasks or complex workflows.' ,
     body: 'Choose a flow and watch each step run in order. Waits and "if none" branches are part of the path. Everything stays in this browser.',
     tileEvents: true,
     takeaway: '',

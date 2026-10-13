@@ -1,4 +1,4 @@
-import signalBridgeDiagram from '../assets/Signal Bridge Simple Drawing.png';
+import signalBridgeDiagram from '../assets/experience-icons/Signal Bridge event-driven action architecture.png';
 
 const features = [
   {
@@ -80,7 +80,7 @@ function Home() {
           <div className="flex min-w-0 flex-1 items-center justify-center rounded-2xl bg-[#f4f7fb] p-4 sm:p-6">
             <img
               src={signalBridgeDiagram}
-              alt="Signal Bridge Control Plane Architecture"
+              alt="Signal Bridge event-driven action architecture"
               className="h-auto max-h-80 w-full object-contain"
             />
           </div>

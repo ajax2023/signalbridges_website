@@ -26,48 +26,55 @@ function errorText(code) {
 }
 
 function Spinner({ size = 3 }) {
+  const dimensions = size === 4 ? 'h-4 w-4' : 'h-3 w-3';
+
   return (
     <span
-      className={`h-${size} w-${size} animate-spin rounded-full border-2 border-current border-t-transparent`}
+      className={`${dimensions} animate-spin rounded-full border-2 border-current border-t-transparent`}
     />
   );
 }
 
 function ReleaseCard({ release, onDownload, downloading }) {
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-5 flex flex-col gap-4">
+    <article className="flex flex-col gap-5 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
       <div>
-        <h2 className="text-sm font-semibold text-slate-100">{release.displayName}</h2>
-        <p className="mt-1 text-xs text-slate-400 leading-relaxed">{release.description}</p>
+        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600" aria-hidden="true">
+          <svg viewBox="0 0 32 32" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M16 4v16M10 14l6 6 6-6M6 25h20" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+        <h2 className="mt-4 text-xl font-bold text-slate-900">{release.displayName}</h2>
+        <p className="mt-1 text-sm leading-relaxed text-slate-500">{release.description}</p>
       </div>
 
-      <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-xs">
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
         <div>
-          <dt className="text-[0.6rem] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-0.5">Version</dt>
-          <dd className="font-mono text-slate-200">{release.version || '—'}</dd>
+          <dt className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Version</dt>
+          <dd className="font-mono text-slate-700">{release.version || '—'}</dd>
         </div>
         <div>
-          <dt className="text-[0.6rem] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-0.5">Size</dt>
-          <dd className="text-slate-200">{formatBytes(release.sizeBytes)}</dd>
+          <dt className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Size</dt>
+          <dd className="text-slate-700">{formatBytes(release.sizeBytes)}</dd>
         </div>
         <div>
-          <dt className="text-[0.6rem] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-0.5">Released</dt>
-          <dd className="text-slate-200">{formatDate(release.releaseDate)}</dd>
+          <dt className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Released</dt>
+          <dd className="text-slate-700">{formatDate(release.releaseDate)}</dd>
         </div>
         <div>
-          <dt className="text-[0.6rem] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-0.5">Platform</dt>
-          <dd className="text-slate-200 capitalize">{release.platform || '—'}</dd>
+          <dt className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Platform</dt>
+          <dd className="capitalize text-slate-700">{release.platform || '—'}</dd>
         </div>
         {release.sha256 && (
           <div className="col-span-2">
-            <dt className="text-[0.6rem] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-0.5">SHA-256</dt>
-            <dd className="font-mono text-[0.65rem] text-slate-400 break-all leading-relaxed">{release.sha256}</dd>
+            <dt className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">SHA-256</dt>
+            <dd className="break-all font-mono text-xs leading-relaxed text-slate-500">{release.sha256}</dd>
           </div>
         )}
       </dl>
 
       {release.notes && (
-        <p className="text-xs text-slate-500 leading-relaxed border-t border-slate-800/60 pt-3">
+        <p className="border-t border-slate-200 pt-4 text-xs leading-relaxed text-slate-500">
           {release.notes}
         </p>
       )}
@@ -77,7 +84,7 @@ function ReleaseCard({ release, onDownload, downloading }) {
           type="button"
           onClick={() => onDownload(release)}
           disabled={downloading}
-          className="inline-flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-xs font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {downloading ? (
             <>
@@ -89,7 +96,7 @@ function ReleaseCard({ release, onDownload, downloading }) {
           )}
         </button>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -227,11 +234,17 @@ function Downloads() {
   }, [user]);
 
   const PageHeader = (
-    <div className="max-w-2xl space-y-2.5">
-      <p className="text-[0.6rem] font-semibold tracking-[0.25em] text-sky-400/80 uppercase">Software</p>
-      <h1 className="text-3xl font-semibold tracking-tight leading-snug sm:text-4xl">
+    <div className="space-y-4">
+      <p className="text-xs font-bold uppercase tracking-[0.24em] text-blue-600">Software</p>
+      <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
         Operator console and on-premise agent.
       </h1>
+      <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
+        <p className="text-base leading-relaxed text-slate-700">
+          Signal Bridge™ components are distributed directly during technical
+          review and deployment evaluation engagements.
+        </p>
+      </div>
     </div>
   );
 
@@ -251,25 +264,21 @@ function Downloads() {
     return (
       <section className="space-y-6">
         {PageHeader}
-        <p className="text-sm text-slate-300 leading-relaxed max-w-2xl">
-          Signal Bridge™ components are distributed directly during technical
-          review and deployment evaluation engagements.
-        </p>
-        <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-6 max-w-sm space-y-4">
+        <div className="max-w-md space-y-5 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
           <div>
-            <p className="text-sm font-semibold text-slate-100">Sign in to access downloads</p>
-            <p className="mt-1 text-xs text-slate-400 leading-relaxed">
+            <p className="text-lg font-bold text-slate-900">Sign in to access downloads</p>
+            <p className="mt-1 text-sm leading-relaxed text-slate-500">
               Installer access is restricted to authorized evaluation participants.
             </p>
           </div>
           {signInError && (
-            <p className="text-xs text-red-400">{signInError}</p>
+            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">{signInError}</p>
           )}
           <button
             type="button"
             onClick={handleSignIn}
             disabled={signingIn}
-            className="inline-flex items-center justify-center gap-2.5 w-full rounded-md border border-slate-700 bg-slate-800/60 px-4 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500 hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {signingIn ? (
               <>
@@ -293,11 +302,11 @@ function Downloads() {
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         {PageHeader}
         <div className="flex items-center gap-3 flex-shrink-0 pt-1">
-          <span className="text-xs text-slate-400 truncate max-w-[200px]">{user.email}</span>
+          <span className="max-w-[200px] truncate text-xs text-slate-500">{user.email}</span>
           <button
             type="button"
             onClick={handleSignOut}
-            className="inline-flex items-center rounded-md border border-slate-700/60 px-3 py-1.5 text-xs text-slate-400 hover:border-slate-500 hover:text-slate-200 transition-colors"
+            className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-900"
           >
             Sign out
           </button>
@@ -305,7 +314,7 @@ function Downloads() {
       </div>
 
       {downloadError && (
-        <div className="rounded-md border border-red-900/40 bg-red-950/20 px-4 py-3 text-xs text-red-300 max-w-2xl">
+        <div className="max-w-2xl rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {errorText(downloadError)}
         </div>
       )}
@@ -318,7 +327,7 @@ function Downloads() {
       )}
 
       {releasesError && !releasesLoading && (
-        <div className="rounded-md border border-red-900/40 bg-red-950/20 px-4 py-3 text-xs text-red-300 max-w-2xl">
+        <div className="max-w-2xl rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {errorText(releasesError)}
         </div>
       )}
@@ -340,7 +349,7 @@ function Downloads() {
         </div>
       )}
 
-      <p className="text-xs text-slate-500 max-w-2xl leading-relaxed border-t border-slate-800/60 pt-4">
+      <p className="max-w-3xl border-t border-slate-200 pt-4 text-xs leading-relaxed text-slate-500">
         Production evaluation builds are distributed to authorized participants only.
         Download links expire after 15 minutes and are not transferable.
       </p>

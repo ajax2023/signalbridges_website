@@ -56,7 +56,7 @@ function Product() {
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           A focused path from incident to confirmed delivery.
         </h1>
-        <div className="max-w-5xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
+        <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
           <p className="text-base leading-relaxed text-slate-700">
           Signal Bridge™ is built for teams that operate under pressure: K-12 and
           higher education, public safety agencies, hospitals, and defense
@@ -125,7 +125,7 @@ function Product() {
       <div className="flex flex-col gap-5 rounded-3xl bg-[#0b2a4b] px-6 py-7 text-white shadow-[0_14px_35px_rgba(15,23,42,0.16)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div>
           <p className="text-sm font-semibold text-sky-300">See Signal Bridge in action</p>
-          <h2 className="mt-1 text-2xl font-bold">Explore events, flows, and coordinated actions.</h2>
+          <h2 className="mt-1 text-2xl font-bold text-white">Explore events, flows, and coordinated actions.</h2>
         </div>
         <a
           href="/experience"

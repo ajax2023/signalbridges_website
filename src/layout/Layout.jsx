@@ -59,7 +59,7 @@ function Layout({ children }) {
             <img
               src={brandLogo}
               alt="Signal Bridge"
-              className="h-9 w-9 rounded-md object-contain bg-black"
+              className="h-9 w-9 object-contain"
               width={36}
               height={36}
             />

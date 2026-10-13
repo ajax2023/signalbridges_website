@@ -1,4 +1,3 @@
-import { ExperienceIcon } from './icons';
 import ActionVisual from './ActionVisual';
 import { actionIconSrc } from './experienceIcons';
 
@@ -38,14 +37,6 @@ function ActionCard({ action, active, done }) {
       data-state={done ? 'done' : active ? 'active' : 'waiting'}
     >
       <div className="flex items-center gap-3">
-        <span
-          className={[
-            'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl',
-            live ? 'bg-sky-50 text-sky-600' : 'bg-slate-100 text-slate-400',
-          ].join(' ')}
-        >
-          <ExperienceIcon name={action.type === 'wait' ? 'shift' : action.type} className="h-6 w-6" />
-        </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <p className="text-sm font-semibold text-slate-900">{action.label}</p>

@@ -56,14 +56,12 @@ function Product() {
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           Connect every event to a coordinated response.
         </h1>
-        <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
-          <p className="text-base leading-relaxed text-slate-700">
+        <p className="max-w-4xl text-base leading-relaxed text-slate-600">
           Signal Bridge brings routine operations and urgent response into the same
           model: events start Flows, Flows coordinate logic, and actions reach people,
           communications systems, and connected devices. Status, acknowledgments, and
           activity history provide visibility where the underlying action supports it.
-          </p>
-        </div>
+        </p>
       </div>
 
       <div>

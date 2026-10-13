@@ -22,7 +22,11 @@ function installStorage() {
 }
 
 function renderExperience() {
-  return render(<Experience />);
+  return render(
+    <MemoryRouter initialEntries={['/experience']}>
+      <Experience />
+    </MemoryRouter>,
+  );
 }
 
 describe('experience learning page', () => {
@@ -189,7 +193,7 @@ describe('experience learning page', () => {
       vi.advanceTimersByTime(360);
     });
     expect(screen.getByText('If none, call supervisor')).toBeTruthy();
-    expect(screen.getByRole('contentinfo').textContent).toMatch(/Demonstration only/);
+    expect(screen.getByRole('note').textContent).toMatch(/Demonstration only/);
     expect(screen.queryByText(/^Simulation —/)).toBeNull();
     act(() => {
       vi.runAllTimers();

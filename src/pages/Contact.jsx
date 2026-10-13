@@ -23,11 +23,10 @@ function Contact() {
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           Talk with the Signal Bridge™ team.
         </h1>
-        <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
-          <p className="text-base leading-relaxed text-slate-700">
-            Share a bit about your environment and what you need from an alerting
-            platform. We will use this information to route your request to the
-            right person.
+        <div className="max-w-4xl space-y-2">
+          <p className="text-base leading-relaxed text-slate-600">
+            Tell us what you&apos;re looking to connect or automate. We&apos;ll help you
+            explore how Signal Bridge could fit your environment.
           </p>
           {topic === 'pricing' && (
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
@@ -40,6 +39,15 @@ function Contact() {
             </p>
           )}
         </div>
+        <p className="text-sm text-slate-600">
+          Prefer email?{' '}
+          <a
+            href="mailto:admin@signalbridges.com"
+            className="font-semibold text-blue-600 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            admin@signalbridges.com
+          </a>
+        </p>
       </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_1.5fr]">

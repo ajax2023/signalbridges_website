@@ -38,14 +38,12 @@ function Security() {
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           Security built around controlled access, tenant isolation, and accountable operations.
         </h1>
-        <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
-          <p className="text-base leading-relaxed text-slate-700">
-            Signal Bridge uses authenticated cloud access, backend authorization,
-            tenant-scoped data, and provisioned Agent identities to establish clear
-            operating boundaries. Controls are evaluated against the specific actions
-            and deployment topology in use.
-          </p>
-        </div>
+        <p className="max-w-4xl text-base leading-relaxed text-slate-600">
+          Signal Bridge uses authenticated cloud access, backend authorization,
+          tenant-scoped data, and provisioned Agent identities to establish clear
+          operating boundaries. Controls are evaluated against the specific actions
+          and deployment topology in use.
+        </p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">

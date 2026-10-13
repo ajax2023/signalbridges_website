@@ -34,13 +34,11 @@ function Home() {
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           From event to action. All connected.
         </h1>
-        <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
-          <p className="text-base leading-relaxed text-slate-700">
-            Signal Bridge connects buttons, sensors, schedules, and external systems
-            to automated Flows that coordinate notifications, voice communications,
-            paging, and connected devices.
-          </p>
-        </div>
+        <p className="max-w-4xl text-base leading-relaxed text-slate-600">
+          Signal Bridge connects buttons, sensors, schedules, and external systems
+          to automated Flows that coordinate notifications, voice communications,
+          paging, and connected devices.
+        </p>
         <div className="flex flex-col gap-3 pt-1 sm:flex-row">
           <a
             href="/experience"

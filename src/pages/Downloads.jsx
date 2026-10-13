@@ -84,7 +84,7 @@ function ReleaseCard({ release, onDownload, downloading }) {
           type="button"
           onClick={() => onDownload(release)}
           disabled={downloading}
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
         >
           {downloading ? (
             <>
@@ -92,7 +92,9 @@ function ReleaseCard({ release, onDownload, downloading }) {
               Preparing download…
             </>
           ) : (
-            'Download Installer'
+            release.type === 'console'
+              ? 'Download Console installer'
+              : 'Download Edge Agent installer'
           )}
         </button>
       </div>
@@ -153,8 +155,8 @@ function Downloads() {
             platform: 'windows',
             displayName: type === 'console' ? 'Signal Bridge Console' : 'Signal Bridge Edge Agent',
             description: type === 'console'
-              ? 'Electron-based operator console for dispatch, paging, alert routing, and operational workflows.'
-              : 'On-premise execution agent for RTP paging, local device operations, and offline-capable workflows.',
+              ? 'Operator interface and Signal Bridge workspace.'
+              : 'Local connectivity, device control, RTP paging, and supported offline operations.',
             version: info.version,
             sha256: info.sha256,
             sizeBytes: info.sizeBytes,
@@ -237,12 +239,17 @@ function Downloads() {
     <div className="space-y-4">
       <p className="text-xs font-bold uppercase tracking-[0.24em] text-blue-600">Software</p>
       <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-        Operator console and on-premise agent.
+        Operator console and on-premises Agent.
       </h1>
-      <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
-        <p className="text-base leading-relaxed text-slate-700">
-          Signal Bridge™ components are distributed directly during technical
-          review and deployment evaluation engagements.
+      <p className="max-w-3xl text-base leading-relaxed text-slate-600">
+        Signal Bridge software is distributed to authorized evaluation and deployment
+        participants.
+      </p>
+      <div className="max-w-4xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
+        <p className="text-sm leading-relaxed text-slate-700">
+          Downloading an installer does not create a tenant, activate an account, or
+          configure integrations. Access and available capabilities depend on your
+          authorized Signal Bridge tenant and deployment configuration.
         </p>
       </div>
     </div>
@@ -278,7 +285,7 @@ function Downloads() {
             type="button"
             onClick={handleSignIn}
             disabled={signingIn}
-            className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {signingIn ? (
               <>
@@ -306,7 +313,7 @@ function Downloads() {
           <button
             type="button"
             onClick={handleSignOut}
-            className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-900"
+            className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             Sign out
           </button>

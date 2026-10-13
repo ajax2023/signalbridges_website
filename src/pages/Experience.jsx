@@ -4,6 +4,7 @@ import FlowPanel from '../experience/FlowPanel';
 import ActionsPanel from '../experience/ActionsPanel';
 import FlowComposer from '../experience/FlowComposer';
 import LearningSidebar from '../experience/LearningSidebar';
+import SiteFooter from '../layout/SiteFooter';
 import { useExperienceTimeline } from '../experience/engine/useExperienceTimeline';
 import {
   buildFlowEvent,
@@ -243,13 +244,14 @@ function Experience() {
             {statusText}
           </div>
         </div>
+        <SiteFooter />
         </div>
-        <footer className="flex shrink-0 items-center justify-center gap-3 border-t border-slate-200 bg-white px-4 py-2 text-center text-xs text-slate-500 sm:justify-between">
+        <div role="note" className="flex shrink-0 items-center justify-center gap-3 border-t border-slate-200 bg-white px-4 py-2 text-center text-xs text-slate-500 sm:justify-between">
           <span>Demonstration only. No calls, messages, pages, or device commands leave this browser.</span>
           <a href="/contact" className="hidden shrink-0 font-semibold text-blue-600 hover:text-blue-700 sm:inline">
             Talk to our team →
           </a>
-        </footer>
+        </div>
       </div>
     </div>
   );

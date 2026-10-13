@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import brandLogo from '../assets/signal-bridge-console.png';
 import ExperienceHeader from './ExperienceHeader';
+import SiteFooter from './SiteFooter';
 
 const navItems = [
   { to: '/', label: 'Overview' },
@@ -28,8 +29,6 @@ function Layout({ children }) {
   const menuButtonClass =
     'lg:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400';
   const mobileNavClass = 'lg:hidden border-b border-slate-200 bg-white';
-  const footerClass = 'border-t border-slate-200 bg-slate-50';
-
   function navClass({ isActive }, to) {
     const isExperienceLink = to === '/experience';
     return [
@@ -126,14 +125,7 @@ function Layout({ children }) {
           {children}
         </div>
       </main>
-      {!isExperience && (
-      <footer className={footerClass}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 text-xs text-slate-500 flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-4">
-          <span>© {new Date().getFullYear()} Signal Bridge™.</span>
-          <span>Built for schools, public safety, health, and defense teams.</span>
-        </div>
-      </footer>
-      )}
+      {!isExperience && <SiteFooter />}
     </div>
   );
 }

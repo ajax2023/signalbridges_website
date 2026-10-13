@@ -15,7 +15,10 @@ function ActionsPanel({ event, timeline, emptyMessage, stagger = false }) {
   return (
     <section className="flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-5" aria-label="Actions">
       <div className="mb-4">
-        <h2 className="text-base font-semibold text-slate-900">Actions</h2>
+        <div className="flex items-center gap-2">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-[0.65rem] font-bold text-white" aria-hidden="true">3</span>
+          <h2 className="text-base font-semibold text-slate-900">Actions</h2>
+        </div>
         <p className="text-sm text-slate-500">See the results.</p>
       </div>
 
@@ -23,7 +26,7 @@ function ActionsPanel({ event, timeline, emptyMessage, stagger = false }) {
         <div className="flex flex-1 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center">
           <p className="max-w-xs text-sm text-slate-500">
             {emptyMessage ||
-              'Outcomes appear here while the flow runs. Nothing is sent until you start an event, and even then it stays in this browser.'}
+              'Outcomes appear here as each Action runs.'}
           </p>
         </div>
       )}

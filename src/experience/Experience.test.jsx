@@ -54,7 +54,7 @@ describe('experience learning page', () => {
     expect(screen.queryByText(/Key Takeaway/)).toBeNull();
     expect(screen.queryByText(/Flow started/)).toBeNull();
     expect(screen.queryByText(/while the flow runs/)).toBeNull();
-    expect(screen.getByText(/Press a button. Its one action/)).toBeTruthy();
+    expect(screen.getByText(/Press a button to see its Action/)).toBeTruthy();
     expect(screen.getByText('Action running')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Reset' }).disabled).toBe(true);
     expect(screen.getByRole('status').textContent).toMatch(/Ready/);
@@ -181,7 +181,7 @@ describe('experience learning page', () => {
     renderExperience();
     fireEvent.click(screen.getByRole('button', { name: /One event. Several steps/i }));
     expect(screen.getByRole('heading', { level: 1, name: 'Flows' })).toBeTruthy();
-    expect(screen.getByText('Choose a flow to see its steps.')).toBeTruthy();
+    expect(screen.getByText('Choose a Flow to see its steps.')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: /Water Leak Response/i }));
     expect(screen.getByText('Send SMS to maintenance')).toBeTruthy();
     expect(screen.queryByText('If none, call supervisor')).toBeNull();
@@ -212,8 +212,37 @@ describe('experience learning page', () => {
     expect(screen.queryByText(/Your Progress/i)).toBeNull();
   });
 
+  it('offers contextual progression only after a completed demonstration', () => {
+    renderExperience();
+    expect(screen.queryByRole('button', { name: /Next: Flows/i })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Call for help/i }));
+    act(() => {
+      vi.runAllTimers();
+    });
+    const next = screen.getByRole('button', { name: /Next: Flows/i });
+    expect(next).toBeTruthy();
+    fireEvent.click(next);
+    expect(screen.getByRole('heading', { level: 1, name: 'Flows' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /Next: External Events & Sensors/i })).toBeNull();
+    expect(screen.getByRole('button', { name: /Buttons & Actions/i }).textContent).toMatch(/Completed/);
+    expect(screen.getByRole('button', { name: /Flows/i }).textContent).toMatch(/Not completed/);
+  });
+
+  it('concludes Build a Flow with a Contact call to action', () => {
+    renderExperience();
+    fireEvent.click(screen.getByRole('button', { name: /Bring everything together/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Run flow' }));
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(screen.getByRole('heading', { name: /See what Signal Bridge can do for your organization/i })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Talk to our team' }).getAttribute('href')).toBe('/contact');
+    expect(screen.queryByRole('button', { name: /Next:/i })).toBeNull();
+  });
+
   it('stacks on small screens and keeps the module list collapsible', () => {
     renderExperience();
+    expect(screen.getByText('Discover how Signal Bridge connects events, Flows, and actions through ten interactive demonstrations.')).toBeTruthy();
     const toggle = screen.getByRole('button', { name: 'Open learning modules' });
     expect(toggle.className).toContain('xl:hidden');
     const nav = screen.getByRole('navigation', { name: 'Learning modules' });

@@ -10,8 +10,11 @@ function EventsPanel({ events, selectedEventId, running, completedEventIds, onSe
       aria-label="Event"
     >
       <div className="mb-4">
-        <h2 className="text-base font-semibold text-slate-900">Event</h2>
-        <p className="text-sm text-slate-500">{hint || (tiles ? 'Choose a button.' : 'Start something.')}</p>
+        <div className="flex items-center gap-2">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-[0.65rem] font-bold text-white" aria-hidden="true">1</span>
+          <h2 className="text-base font-semibold text-slate-900">Event</h2>
+        </div>
+        <p className="text-sm text-slate-500">{hint || (tiles ? 'Choose a button.' : 'Start an Event.')}</p>
       </div>
       <div className={tiles ? 'grid grid-cols-2 content-start gap-3' : 'flex flex-1 flex-col gap-3 overflow-y-auto'}>
         {events.map((event) => (

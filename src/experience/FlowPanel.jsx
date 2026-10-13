@@ -35,13 +35,16 @@ function FlowPanel({ event, timeline, omitFlow = false, lesson = false }) {
       aria-label="Signal Bridge"
     >
       <div className="mb-4">
-        <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
-        <p className="text-sm text-slate-500">{lesson ? 'Follows the flow.' : 'Processes the event.'}</p>
+        <div className="flex items-center gap-2">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-[0.65rem] font-bold text-white" aria-hidden="true">2</span>
+          <h2 className="text-base font-semibold text-slate-900">Signal Bridge</h2>
+        </div>
+        <p className="text-sm text-slate-500">{lesson ? 'Follows the Flow.' : 'Processes the Event.'}</p>
       </div>
 
       {lesson && !lessonSteps && (
         <div className="flex flex-1 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-[#f4f7fb] px-4 py-10 text-center">
-          <p className="max-w-xs text-sm text-slate-500">Choose a flow to see its steps.</p>
+          <p className="max-w-xs text-sm text-slate-500">Choose a Flow to see its steps.</p>
         </div>
       )}
 

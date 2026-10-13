@@ -46,7 +46,7 @@ export function bridgeView(event, timeline, { omitFlow = false } = {}) {
       id: 'completed',
       label: 'Completed',
       detail: complete
-        ? `Simulated action${actionCount === 1 ? '' : 's'} finished`
+        ? `Action${actionCount === 1 ? '' : 's'} finished`
         : 'Waiting',
       state: complete ? 'done' : 'idle',
     },

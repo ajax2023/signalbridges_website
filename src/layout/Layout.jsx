@@ -23,11 +23,11 @@ function Layout({ children }) {
     : 'min-h-screen flex flex-col bg-white text-slate-900';
 
   const headerClass = 'border-b border-slate-200 bg-white';
-  const brandClass = 'text-lg font-semibold tracking-tight text-slate-900';
-  const taglineClass = 'hidden sm:block text-xs text-slate-500';
+  const brandClass = 'whitespace-nowrap text-lg font-semibold tracking-tight text-slate-900';
+  const taglineClass = 'hidden lg:block text-xs text-slate-500';
   const menuButtonClass =
-    'md:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400';
-  const mobileNavClass = 'md:hidden border-b border-slate-200 bg-white';
+    'lg:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400';
+  const mobileNavClass = 'lg:hidden border-b border-slate-200 bg-white';
   const footerClass = 'border-t border-slate-200 bg-slate-50';
 
   function navClass({ isActive }, to) {
@@ -76,7 +76,7 @@ function Layout({ children }) {
               </div>
             </div>
           </div>
-          <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+          <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}

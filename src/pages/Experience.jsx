@@ -9,6 +9,7 @@ import {
   buildFlowEvent,
   eventsForModule,
   getModule,
+  LEARNING_MODULES,
 } from '../experience/learning/modules';
 import { useLearningProgress } from '../experience/learning/progress';
 import '../experience/experience.css';
@@ -21,8 +22,11 @@ function Experience() {
   const [composerEvent, setComposerEvent] = useState(null);
   const playModuleRef = useRef('A');
   const seenRunRef = useRef(null);
+  const contentScrollRef = useRef(null);
 
   const module = getModule(moduleId);
+  const moduleIndex = LEARNING_MODULES.findIndex((item) => item.id === module.id);
+  const nextModule = LEARNING_MODULES[moduleIndex + 1] || null;
   const { progress, recordCompletion, clearAll } = useLearningProgress();
   const { state, play, reset } = useExperienceTimeline();
   const catalogEvents = useMemo(
@@ -36,6 +40,8 @@ function Experience() {
       : catalogEvents.find((event) => event.id === state.eventId) || null;
 
   const running = state.status === 'running';
+  const hasCompletedCurrentRun =
+    state.status === 'complete' && playModuleRef.current === module.id;
   const completedEventIds = progress.modules[module.id]?.events || [];
   const hasAnyCompletion = Object.values(progress.modules).some((entry) => (entry?.events || []).length > 0);
   const canReset = state.status !== 'idle' || hasAnyCompletion;
@@ -43,6 +49,7 @@ function Experience() {
   useEffect(() => {
     setComposerEvent(null);
     reset();
+    if (contentScrollRef.current) contentScrollRef.current.scrollTop = 0;
   }, [moduleId, reset]);
 
   useEffect(() => {
@@ -64,6 +71,11 @@ function Experience() {
     setComposerEvent(null);
     clearAll();
     reset();
+  }
+
+  function handleModuleSelect(id) {
+    setModuleId(id);
+    setSidebarOpen(false);
   }
 
   function handleRunFlow() {
@@ -96,14 +108,11 @@ function Experience() {
         progress={progress}
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        onSelect={(id) => {
-          setModuleId(id);
-          setSidebarOpen(false);
-        }}
+        onSelect={handleModuleSelect}
       />
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="min-h-0 flex-1 overflow-y-auto">
+        <div ref={contentScrollRef} className="min-h-0 flex-1 overflow-y-auto">
         <div className="flex w-full flex-col gap-5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
           <button
             type="button"
@@ -177,13 +186,58 @@ function Experience() {
               stagger={module.kind === 'flows'}
               emptyMessage={
                 module.kind === 'buttons'
-                  ? 'Press a button. Its one action shows up here, and it stays in this browser.'
+                  ? 'Press a button to see its Action appear here.'
                   : module.kind === 'flows'
-                    ? 'Choose a flow. Each step shows up here, and it stays in this browser.'
+                    ? 'Choose a Flow to see its Actions appear here in sequence.'
                     : undefined
               }
             />
           </div>
+
+          {hasCompletedCurrentRun && (
+            <section
+              aria-label="Module complete"
+              className="flex flex-col gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="min-w-0">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
+                  Demonstration complete
+                </p>
+                {nextModule ? (
+                  <p className="mt-1 max-w-4xl text-sm leading-relaxed text-slate-700">
+                    {module.takeaway ||
+                      'Continue to the next demonstration to build on the Event → Flow → Action model.'}
+                  </p>
+                ) : (
+                  <>
+                    <h2 className="mt-1 text-xl font-bold text-slate-900">
+                      See what Signal Bridge can do for your organization.
+                    </h2>
+                    <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">
+                      Events from many sources can start Flows that coordinate decision logic,
+                      communications, and connected devices from one place.
+                    </p>
+                  </>
+                )}
+              </div>
+              {nextModule ? (
+                <button
+                  type="button"
+                  onClick={() => handleModuleSelect(nextModule.id)}
+                  className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                  Next: {nextModule.name} →
+                </button>
+              ) : (
+                <a
+                  href="/contact"
+                  className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                  Talk to our team
+                </a>
+              )}
+            </section>
+          )}
 
           <div role="status" className="sr-only">
             {statusText}

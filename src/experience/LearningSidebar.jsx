@@ -31,6 +31,12 @@ function LearningSidebar({ activeId, progress, open, onSelect, onClose }) {
             Close
           </button>
         </div>
+        <div className="border-b border-white/10 px-4 py-3">
+          <p className="text-sm font-semibold text-white">Interactive Experience</p>
+          <p className="mt-1 text-xs leading-snug text-slate-300">
+            Discover how Signal Bridge connects events, Flows, and actions through ten interactive demonstrations.
+          </p>
+        </div>
         <div className="flex-1 space-y-1 overflow-y-auto px-3 py-3">
           {LEARNING_MODULES.map((module) => {
             const active = module.id === activeId;
@@ -44,13 +50,17 @@ function LearningSidebar({ activeId, progress, open, onSelect, onClose }) {
                 className={[
                   'flex w-full items-start gap-3 rounded-xl px-2.5 py-2.5 text-left transition-colors',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300',
-                  active ? 'bg-[#16375f]' : 'hover:bg-white/5',
+                  active ? 'bg-[#16375f] ring-1 ring-inset ring-sky-400/40' : 'hover:bg-white/5',
                 ].join(' ')}
               >
                 <span
                   className={[
                     'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold',
-                    active ? 'bg-blue-500 text-white' : 'bg-white/10 text-slate-300',
+                    active
+                      ? 'bg-blue-500 text-white'
+                      : complete
+                        ? 'bg-emerald-500/20 text-emerald-200'
+                        : 'bg-white/10 text-slate-300',
                   ].join(' ')}
                   aria-hidden="true"
                 >
@@ -64,7 +74,7 @@ function LearningSidebar({ activeId, progress, open, onSelect, onClose }) {
                   className={[
                     'mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border',
                     complete
-                      ? 'border-blue-400 bg-blue-500 text-[0.6rem] text-white'
+                      ? 'border-emerald-400 bg-emerald-500 text-[0.6rem] text-white'
                       : active
                         ? 'border-blue-300 bg-blue-400'
                         : 'border-slate-500 bg-transparent',

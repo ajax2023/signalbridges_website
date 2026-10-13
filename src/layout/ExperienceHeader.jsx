@@ -48,14 +48,14 @@ function ExperienceHeader() {
             height={36}
           />
           <span>
-            <span className="block text-lg font-semibold tracking-tight text-slate-900">Signal Bridge™</span>
-            <span className="hidden text-xs text-slate-500 sm:block">
+            <span className="block whitespace-nowrap text-lg font-semibold tracking-tight text-slate-900">Signal Bridge™</span>
+            <span className="hidden text-xs text-slate-500 lg:block">
               Connecting events, communications, and devices.
             </span>
           </span>
         </NavLink>
 
-        <nav className="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-1 text-sm font-medium lg:flex" aria-label="Primary">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -70,7 +70,7 @@ function ExperienceHeader() {
 
         <button
           type="button"
-          className="inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400 md:hidden"
+          className="inline-flex items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:border-slate-400 lg:hidden"
           aria-expanded={mobileOpen}
           aria-controls="experience-mobile-nav"
           onClick={() => setMobileOpen((value) => !value)}
@@ -79,7 +79,7 @@ function ExperienceHeader() {
         </button>
       </div>
       {mobileOpen && (
-        <nav id="experience-mobile-nav" className="border-b border-slate-200 bg-white md:hidden" aria-label="Primary mobile">
+        <nav id="experience-mobile-nav" className="border-b border-slate-200 bg-white lg:hidden" aria-label="Primary mobile">
           <div className="mx-auto grid max-w-7xl gap-1 px-4 py-2 sm:px-6">
             {navItems.map((item) => (
               <NavLink

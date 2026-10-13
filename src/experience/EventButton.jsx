@@ -1,5 +1,5 @@
 import { ExperienceIcon } from './icons';
-import { experienceIconSrc } from './experienceIcons';
+import { eventIconSrcs } from './experienceIcons';
 
 function PhysicalFace({ tone }) {
   const toneClass =
@@ -29,9 +29,20 @@ function PhysicalFace({ tone }) {
 }
 
 function TileGlyph({ event }) {
-  const src = experienceIconSrc(event.iconFile);
-  if (src) {
-    return <img src={src} alt="" className="h-16 w-16 object-contain" />;
+  const sources = eventIconSrcs(event);
+  if (sources.length > 0) {
+    return (
+      <span className="flex h-16 items-center justify-center -space-x-3">
+        {sources.map((src) => (
+          <img
+            key={src}
+            src={src}
+            alt=""
+            className={sources.length > 1 ? 'h-14 w-14 object-contain' : 'h-16 w-16 object-contain'}
+          />
+        ))}
+      </span>
+    );
   }
   const tone = event.tone;
   const bubble =
@@ -52,6 +63,7 @@ function TileGlyph({ event }) {
 function EventButton({ event, selected, running, completed, onSelect, variant = 'row' }) {
   const physical = Boolean(event.tone) && variant !== 'tile';
   const stateLabel = running && selected ? 'Running' : completed ? 'Completed' : selected ? 'Selected' : '';
+  const artwork = eventIconSrcs(event);
 
   if (variant === 'tile') {
     return (
@@ -95,7 +107,18 @@ function EventButton({ event, selected, running, completed, onSelect, variant = 
         running && !selected ? 'opacity-50' : '',
       ].join(' ')}
     >
-      {physical ? (
+      {artwork.length > 0 ? (
+        <span className={['flex h-12 w-12 shrink-0 items-center justify-center -space-x-2', running && selected ? 'sb-experience__pulse rounded-xl' : ''].join(' ')}>
+          {artwork.map((src) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className={artwork.length > 1 ? 'h-9 w-9 object-contain' : 'h-11 w-11 object-contain'}
+            />
+          ))}
+        </span>
+      ) : physical ? (
         <span className={running && selected ? 'sb-experience__pulse rounded-full' : ''}>
           <PhysicalFace tone={event.tone} />
         </span>

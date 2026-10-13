@@ -1,7 +1,9 @@
 import { FLOW_ACTION_OPTIONS, FLOW_TRIGGERS } from './learning/modules';
-import { actionIconSrc } from './experienceIcons';
+import { actionIconSrc, triggerIconSrc } from './experienceIcons';
 
 function FlowComposer({ triggerId, actionTypes, running, onTrigger, onToggleAction, onRun }) {
+  const triggerArtwork = triggerIconSrc(triggerId);
+
   return (
     <section className="flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-5" aria-label="Event">
       <div className="mb-4">
@@ -12,19 +14,22 @@ function FlowComposer({ triggerId, actionTypes, running, onTrigger, onToggleActi
       <label className="text-xs font-semibold uppercase tracking-wide text-slate-500" htmlFor="flow-trigger">
         Trigger
       </label>
-      <select
-        id="flow-trigger"
-        value={triggerId}
-        onChange={(event) => onTrigger(event.target.value)}
-        disabled={running}
-        className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-      >
-        {FLOW_TRIGGERS.map((trigger) => (
-          <option key={trigger.id} value={trigger.id}>
-            {trigger.label}
-          </option>
-        ))}
-      </select>
+      <div className="mt-1 flex items-center gap-2">
+        {triggerArtwork && <img src={triggerArtwork} alt="" className="h-11 w-11 shrink-0 object-contain" />}
+        <select
+          id="flow-trigger"
+          value={triggerId}
+          onChange={(event) => onTrigger(event.target.value)}
+          disabled={running}
+          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        >
+          {FLOW_TRIGGERS.map((trigger) => (
+            <option key={trigger.id} value={trigger.id}>
+              {trigger.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <fieldset className="mt-4" disabled={running}>
         <legend className="text-xs font-semibold uppercase tracking-wide text-slate-500">Actions</legend>

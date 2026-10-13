@@ -15,8 +15,18 @@ const intercom = eventDef({
   routing: 'Open a simulated talk path',
   dispatch: 'Connect call and zone page',
   actionList: [
-    { type: 'phone', label: 'Phone Call', result: 'Simulated intercom call connected.' },
-    { type: 'paging', label: 'Paging Announcement', result: 'Simulated two-way page on the zone speaker.' },
+    {
+      type: 'phone',
+      label: 'Phone Call',
+      result: 'Simulated intercom call connected.',
+      imageKey: 'algo-doorphone',
+    },
+    {
+      type: 'paging',
+      label: 'Paging Announcement',
+      result: 'Simulated two-way page on the zone speaker.',
+      imageKey: 'algo-horn',
+    },
   ],
 });
 

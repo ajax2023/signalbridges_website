@@ -225,7 +225,7 @@ describe('experience learning page', () => {
     expect(stage.className).toContain('grid-cols-1');
     expect(stage.className).toContain('lg:grid-cols-3');
     expect(document.querySelector('[aria-label="Event"] .grid').className).toContain('grid-cols-2');
-    expect(screen.getByRole('button', { name: /Call for help/i }).querySelector('img').getAttribute('src')).toMatch(/phone/);
+    expect(screen.getByRole('button', { name: /Call for help/i }).querySelector('img').getAttribute('src')).toMatch(/Phone%20Call/);
     expect(document.querySelector('.sb-learn').className).toContain('overflow-hidden');
   });
 

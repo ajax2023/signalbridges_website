@@ -22,6 +22,7 @@ export function actions(list) {
     label: a.label,
     result: a.result,
     ...(a.displayText ? { displayText: a.displayText } : {}),
+    ...(a.imageKey ? { imageKey: a.imageKey } : {}),
   }));
 }
 

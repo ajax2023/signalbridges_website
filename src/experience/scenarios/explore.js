@@ -77,6 +77,7 @@ export const EXPLORE_SCENARIO = {
           type: 'paging',
           label: 'Speaker paging',
           result: 'Page playing on Building A speakers',
+          imageKey: 'algo-horn',
         },
       ],
     }),

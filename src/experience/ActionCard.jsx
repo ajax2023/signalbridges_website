@@ -18,7 +18,13 @@ function ActionCard({ action, active, done }) {
   const live = active || done;
   const status = STATUS[action.type] || { active: 'Running', done: 'Done' };
   const pill = done ? status.done : active ? status.active : null;
-  const src = actionIconSrc(action.type);
+  const src = actionIconSrc(action);
+  const artworkMotion =
+    live && action.type === 'strobe'
+      ? 'sb-learn__strobe'
+      : live && (action.type === 'paging' || action.type === 'phone')
+        ? 'sb-learn__wave'
+        : '';
 
   return (
     <li
@@ -32,18 +38,14 @@ function ActionCard({ action, active, done }) {
       data-state={done ? 'done' : active ? 'active' : 'waiting'}
     >
       <div className="flex items-center gap-3">
-        {src ? (
-          <img src={src} alt="" className={['h-11 w-11 shrink-0 object-contain', live ? '' : 'opacity-40'].join(' ')} />
-        ) : (
-          <span
-            className={[
-              'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl',
-              live ? 'bg-sky-50 text-sky-600' : 'bg-slate-100 text-slate-400',
-            ].join(' ')}
-          >
-            <ExperienceIcon name={action.type === 'wait' ? 'shift' : action.type} className="h-6 w-6" />
-          </span>
-        )}
+        <span
+          className={[
+            'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl',
+            live ? 'bg-sky-50 text-sky-600' : 'bg-slate-100 text-slate-400',
+          ].join(' ')}
+        >
+          <ExperienceIcon name={action.type === 'wait' ? 'shift' : action.type} className="h-6 w-6" />
+        </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <p className="text-sm font-semibold text-slate-900">{action.label}</p>
@@ -58,7 +60,15 @@ function ActionCard({ action, active, done }) {
             {live ? action.result : 'Waiting for this action to run.'}
           </p>
         </div>
-        {src ? null : <ActionVisual action={action} live={live} />}
+        {src ? (
+          <img
+            src={src}
+            alt=""
+            className={['h-11 w-11 shrink-0 object-contain', live ? '' : 'opacity-40', artworkMotion].join(' ')}
+          />
+        ) : (
+          <ActionVisual action={action} live={live} />
+        )}
       </div>
     </li>
   );

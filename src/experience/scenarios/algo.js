@@ -13,7 +13,31 @@ export const ALGO_EVENTS = [
     routing: 'Route to visual alert devices',
     dispatch: 'Start strobe pattern',
     actionList: [
-      { type: 'strobe', label: 'Strobe Activated', result: 'Simulated strobe flashing for 10 seconds.' },
+      {
+        type: 'strobe',
+        label: 'Red Strobe Activated',
+        result: 'Simulated red Algo strobe flashing for 10 seconds.',
+        imageKey: 'strobe-red',
+      },
+    ],
+  }),
+  eventDef({
+    id: 'algo-blue-strobe',
+    label: 'Blue strobe',
+    icon: 'strobe',
+    accent: 'sky',
+    ingressLabel: 'Simulated blue Algo strobe',
+    received: 'Blue visual alert requested',
+    conditions: 'Blue strobe pattern selected',
+    routing: 'Route to blue visual alert devices',
+    dispatch: 'Start blue strobe pattern',
+    actionList: [
+      {
+        type: 'strobe',
+        label: 'Blue Strobe Activated',
+        result: 'Simulated blue Algo strobe flashing for 10 seconds.',
+        imageKey: 'strobe-blue',
+      },
     ],
   }),
   eventDef({
@@ -32,6 +56,7 @@ export const ALGO_EVENTS = [
         label: 'Display Message',
         result: 'Simulated message on Algo 8410.',
         displayText: 'EMERGENCY\nASSISTANCE REQUIRED',
+        imageKey: 'emergency-display',
       },
     ],
   }),
@@ -46,7 +71,12 @@ export const ALGO_EVENTS = [
     routing: 'Route to audio devices',
     dispatch: 'Play the alert tone',
     actionList: [
-      { type: 'paging', label: 'Paging Announcement', result: 'Simulated tone on Algo speakers.' },
+      {
+        type: 'paging',
+        label: 'Paging Announcement',
+        result: 'Simulated tone on Algo speakers.',
+        imageKey: 'algo-horn',
+      },
     ],
   }),
   eventDef({
@@ -60,14 +90,25 @@ export const ALGO_EVENTS = [
     routing: 'Fan out to Algo device types',
     dispatch: 'Activate visual and audio together',
     actionList: [
-      { type: 'strobe', label: 'Strobe Activated', result: 'Simulated strobe pattern started.' },
+      {
+        type: 'strobe',
+        label: 'Strobe Activated',
+        result: 'Simulated strobe pattern started.',
+        imageKey: 'strobe-red',
+      },
       {
         type: 'display',
         label: 'Display Message',
         result: 'Simulated sign updated.',
         displayText: 'ALERT\nCHECK SPEAKERS',
+        imageKey: 'emergency-display',
       },
-      { type: 'paging', label: 'Paging Announcement', result: 'Simulated audio alert playing.' },
+      {
+        type: 'paging',
+        label: 'Paging Announcement',
+        result: 'Simulated audio alert playing.',
+        imageKey: 'algo-horn',
+      },
     ],
     timings: { stepMs: 700, actionStaggerMs: 420, completeHoldMs: 200 },
   }),

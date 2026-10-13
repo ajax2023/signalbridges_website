@@ -1,21 +1,21 @@
 const reliabilityFeatures = [
   {
     number: '01',
-    title: 'Offline-aware endpoints',
+    title: 'Cloud-connected execution',
     description:
-      'Desktop and on-premise components can continue operating with local queues and policy when upstream connectivity is intermittent.',
+      'During normal operation, cloud services authorize users, orchestrate actions, and connect cloud-dependent channels such as SIP and notifications.',
   },
   {
     number: '02',
-    title: 'Store-and-forward delivery',
+    title: 'Local Agent execution',
     description:
-      'Alerts can be held in durable queues and forwarded when paths become available, reducing the risk of silent drops during outages.',
+      'The on-premises Agent reaches supported devices on the LAN and executes local device actions and RTP paging commands.',
   },
   {
     number: '03',
-    title: 'Visibility for operators',
+    title: 'Configured offline RTP paging',
     description:
-      'Operators can see whether alerts are queued, partially delivered, or fully acknowledged, so they can decide when to escalate.',
+      'After zones have been configured and cached, operators on the LAN can use the local Agent interface for RTP paging without cloud connectivity.',
   },
 ];
 
@@ -27,13 +27,14 @@ function Reliability() {
           Reliability & offline
         </p>
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-          Designed to function when infrastructure is under stress.
+          Know what keeps running—and what depends on the cloud.
         </h1>
         <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
           <p className="text-base leading-relaxed text-slate-700">
-            Signal Bridge™ emphasizes predictable behavior during degraded network
-            conditions. The goal is to keep operators informed about what the
-            system is doing and how far each alert has progressed.
+            Signal Bridge separates cloud orchestration from local execution so teams
+            can plan for real dependencies. Offline capability is specific to configured
+            local RTP paging; it does not mean every Flow, SIP call, notification, or
+            device action operates without Internet connectivity.
           </p>
         </div>
       </div>
@@ -55,13 +56,13 @@ function Reliability() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <article className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-          <h2 className="text-xl font-bold text-slate-900">Resilience patterns</h2>
-          <p className="mt-1 text-sm text-slate-500">Delivery options that help operations continue.</p>
+          <h2 className="text-xl font-bold text-slate-900">Execution visibility</h2>
+          <p className="mt-1 text-sm text-slate-500">Useful status without treating every channel as identical.</p>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
             {[
-              'Multi-path delivery where channels can be combined.',
-              'Endpoint agents that can be configured close to facilities.',
-              'Clear states for queued, in-progress, and failed deliveries.',
+              'Failures are surfaced when required cloud, Agent, or device dependencies are unavailable.',
+              'SIP paging exposes call lifecycle and outcome information.',
+              'Local offline RTP paging writes Agent-side audit events, with optional sync when configured.',
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">✓</span>
@@ -71,12 +72,20 @@ function Reliability() {
           </ul>
         </article>
         <article className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-          <h2 className="text-xl font-bold text-slate-900">Disaster recovery posture</h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">
-            Deployment topologies can be designed to support regional isolation,
-            backup, and restore processes appropriate for your environment. Your
-            team retains control over RPO/RTO objectives and verification.
-          </p>
+          <h2 className="text-xl font-bold text-slate-900">Supported recovery mechanisms</h2>
+          <p className="mt-1 text-sm text-slate-500">Recovery behavior follows the component that performs the work.</p>
+          <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
+            {[
+              'Agent connectivity uses reconnection behavior after temporary service interruptions.',
+              'Cached paging-zone configuration supports the local offline RTP path.',
+              'Active direct RTP media sessions can continue after a cloud control-plane interruption once established.',
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">✓</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </article>
       </div>
     </section>

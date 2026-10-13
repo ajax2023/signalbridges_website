@@ -1,38 +1,38 @@
-const deliverySteps = [
+const executionSteps = [
   {
     number: '01',
-    title: 'Ingest',
-    subtitle: 'Receive the event',
+    title: 'Events',
+    subtitle: 'Start anywhere',
     description:
-      'Operators or integrated systems create an alert with structured metadata, severity, and target audiences. Signal Bridge standardizes the input so downstream delivery is predictable.',
+      'Start with a button, sensor, schedule, webhook, SIP event, or connected system.',
   },
   {
     number: '02',
-    title: 'Route',
-    subtitle: 'Apply the right policy',
+    title: 'Flows',
+    subtitle: 'Coordinate the logic',
     description:
-      'Policy-driven routing ensures the right people and roles see the alert through channels that make sense for their environment.',
+      'Use conditions, waits, decisions, and escalation to coordinate the response.',
   },
   {
     number: '03',
-    title: 'Confirm',
-    subtitle: 'See what was delivered',
+    title: 'Actions',
+    subtitle: 'Reach people and devices',
     description:
-      'Delivery and acknowledgement signals show command staff and leadership the reach, gaps, and follow-up actions for every alert.',
+      'Send notifications, place calls, page speakers, update displays, or activate devices.',
   },
 ];
 
 const environments = [
-  'Multiple campuses, facilities, or jurisdictions.',
-  'Mixed device fleets and connectivity conditions.',
-  'Operators with varying technical backgrounds.',
+  'Routine operations, scheduled communications, and urgent response.',
+  'Multiple campuses, facilities, sites, or jurisdictions.',
+  'Mixed communications, device fleets, and connectivity conditions.',
 ];
 
 const capabilities = [
-  'Structured alert composition with templates.',
-  'Role-aware targeting for staff and partner agencies.',
-  'Delivery status and acknowledgement visibility.',
-  'Operator activity history for after-action review.',
+  'Buttons, sensors, schedules, webhooks, SIP, and connected systems.',
+  'Multi-step Flows with conditions, waits, decisions, and escalation.',
+  'Notifications, calls, paging, displays, and device actions.',
+  'Delivery, failure, acknowledgment, and activity visibility where supported.',
 ];
 
 function CheckItem({ children }) {
@@ -54,14 +54,14 @@ function Product() {
           Product
         </p>
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-          A focused path from incident to confirmed delivery.
+          Connect every event to a coordinated response.
         </h1>
         <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
           <p className="text-base leading-relaxed text-slate-700">
-          Signal Bridge™ is built for teams that operate under pressure: K-12 and
-          higher education, public safety agencies, hospitals, and defense
-          organizations. The product keeps operators focused on the incident while
-          the platform manages routing, delivery, and acknowledgement tracking.
+          Signal Bridge brings routine operations and urgent response into the same
+          model: events start Flows, Flows coordinate logic, and actions reach people,
+          communications systems, and connected devices. Status, acknowledgments, and
+          activity history provide visibility where the underlying action supports it.
           </p>
         </div>
       </div>
@@ -69,10 +69,10 @@ function Product() {
       <div>
         <div className="mb-4">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">How it works</p>
-          <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">From signal to confirmation</h2>
+          <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">Events → Flows → Actions</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
-          {deliverySteps.map((step) => (
+          {executionSteps.map((step) => (
             <article
               key={step.number}
               className="flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)]"
@@ -101,7 +101,7 @@ function Product() {
             </svg>
           </span>
           <h2 className="mt-4 text-xl font-bold text-slate-900">Built for complex environments</h2>
-          <p className="mt-1 text-sm text-slate-500">Designed for organizations where clarity and reach matter.</p>
+          <p className="mt-1 text-sm text-slate-500">Useful for everyday coordination and time-sensitive response.</p>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
             {environments.map((item) => <CheckItem key={item}>{item}</CheckItem>)}
           </ul>
@@ -115,7 +115,7 @@ function Product() {
             </svg>
           </span>
           <h2 className="mt-4 text-xl font-bold text-slate-900">Key capabilities</h2>
-          <p className="mt-1 text-sm text-slate-500">The tools operators need to act and confirm delivery.</p>
+          <p className="mt-1 text-sm text-slate-500">Connect event sources to coordinated communications and devices.</p>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
             {capabilities.map((item) => <CheckItem key={item}>{item}</CheckItem>)}
           </ul>
@@ -131,7 +131,7 @@ function Product() {
           href="/experience"
           className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a4b]"
         >
-          Open the experience
+          See Signal Bridge in action
         </a>
       </div>
     </section>

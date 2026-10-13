@@ -30,21 +30,27 @@ function Layout({ children }) {
   const mobileNavClass = 'md:hidden border-b border-slate-200 bg-white';
   const footerClass = 'border-t border-slate-200 bg-slate-50';
 
-  function navClass({ isActive }) {
+  function navClass({ isActive }, to) {
+    const isExperienceLink = to === '/experience';
     return [
       'px-3 py-1.5 rounded-md transition-colors',
       isActive
         ? 'text-sky-600 bg-sky-50'
-        : 'text-slate-600 hover:text-sky-600 hover:bg-sky-50',
+        : isExperienceLink
+          ? 'font-semibold text-sky-600 hover:text-sky-700 hover:bg-sky-50'
+          : 'text-slate-600 hover:text-sky-600 hover:bg-sky-50',
     ].join(' ');
   }
 
-  function mobileNavLinkClass({ isActive }) {
+  function mobileNavLinkClass({ isActive }, to) {
+    const isExperienceLink = to === '/experience';
     return [
       'block px-3 py-2 rounded-md text-sm transition-colors',
       isActive
         ? 'text-sky-600 bg-sky-50'
-        : 'text-slate-600 hover:text-sky-600 hover:bg-sky-50',
+        : isExperienceLink
+          ? 'font-semibold text-sky-600 hover:text-sky-700 hover:bg-sky-50'
+          : 'text-slate-600 hover:text-sky-600 hover:bg-sky-50',
     ].join(' ');
   }
 
@@ -66,7 +72,7 @@ function Layout({ children }) {
             <div>
               <div className={brandClass}>Signal Bridge™</div>
               <div className={taglineClass}>
-                Defense-first alert delivery for military, schools, and critical infrastructure
+                Connecting events, communications, and devices.
               </div>
             </div>
           </div>
@@ -75,7 +81,7 @@ function Layout({ children }) {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className={navClass}
+                className={(state) => navClass(state, item.to)}
                 end={item.to === '/'}
               >
                 {item.label}
@@ -101,7 +107,7 @@ function Layout({ children }) {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className={mobileNavLinkClass}
+                className={(state) => mobileNavLinkClass(state, item.to)}
                 end={item.to === '/'}
                 onClick={() => setMobileOpen(false)}
               >

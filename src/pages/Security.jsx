@@ -1,29 +1,29 @@
 const securityLayers = [
   {
     number: '01',
-    title: 'Data handling',
+    title: 'Controlled access',
     items: [
-      'Scoped data collection focused on operational alert content.',
-      'Separation of operator identities from alert payloads where practical.',
-      'Retention policies that can be aligned with your requirements.',
+      'Firebase authentication protects online operator and administrative access.',
+      'Backend role checks and action-specific permissions are applied to implemented APIs.',
+      'Agent provisioning binds an Agent identity to its assigned tenant.',
     ],
   },
   {
     number: '02',
-    title: 'Access control',
+    title: 'Tenant boundaries',
     items: [
-      'Role- and responsibility-based access to operator functions.',
-      'Administrative boundaries for campuses, facilities, or regions.',
-      'Support for change management and auditability of key actions.',
+      'Tenant-scoped records and authorization checks separate covered operations.',
+      'Cross-tenant access is blocked by implemented backend checks, not by hidden UI controls.',
+      'Control coverage is reviewed by API and action during technical evaluation.',
     ],
   },
   {
     number: '03',
-    title: 'Platform hygiene',
+    title: 'Accountable operations',
     items: [
-      'Use of maintained dependencies and regular update windows.',
-      'Environment separation for development, testing, and production.',
-      'Monitoring for anomalous platform behavior where deployed.',
+      'SIP paging records tenant-scoped call lifecycle and outcome information.',
+      'Configured offline RTP paging writes local Agent audit events.',
+      'Logging and audit depth vary by action and deployment configuration.',
     ],
   },
 ];
@@ -36,13 +36,14 @@ function Security() {
           Security posture
         </p>
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-          A conservative, layered approach to protecting alerts and data.
+          Security built around controlled access, tenant isolation, and accountable operations.
         </h1>
         <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
           <p className="text-base leading-relaxed text-slate-700">
-            This page outlines design intentions and guardrails at a high level.
-            It is not a certification statement. Detailed documentation and
-            security reviews should be completed directly with your security team.
+            Signal Bridge uses authenticated cloud access, backend authorization,
+            tenant-scoped data, and provisioned Agent identities to establish clear
+            operating boundaries. Controls are evaluated against the specific actions
+            and deployment topology in use.
           </p>
         </div>
       </div>
@@ -71,19 +72,20 @@ function Security() {
 
       <article className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)] sm:p-8">
         <div className="max-w-4xl">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Technical evaluation</p>
-          <h2 className="mt-1 text-2xl font-bold text-slate-900">Working with your security team</h2>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Technical qualification</p>
+          <h2 className="mt-1 text-2xl font-bold text-slate-900">Implemented controls, design goals, and certifications</h2>
         </div>
         <p className="mt-4 max-w-4xl text-sm leading-relaxed text-slate-600">
-          Signal Bridge™ is intended to fit within existing security architectures
-          rather than replace them. Network topology, identity systems, device
-          management, and incident response remain under your control. Product
-          documentation and security review materials can be shared directly
-          under appropriate agreements.
+          The controls described above reflect implemented foundations, with
+          action-specific scope and configuration requirements. Broader hardening
+          objectives are treated as design goals until verified for the proposed
+          deployment. Signal Bridge does not claim ISO 27001, SOC 2, or another
+          independent certification on this page.
         </p>
         <p className="mt-5 border-t border-slate-200 pt-4 text-sm leading-relaxed text-slate-500">
-          Detailed deployment and architecture documentation is provided during
-          technical evaluation and deployment planning.
+          Your network topology, identity integration, device management, retention,
+          and incident-response requirements should be confirmed during technical
+          evaluation and deployment planning.
         </p>
       </article>
     </section>

@@ -190,8 +190,11 @@ function Experience() {
           </div>
         </div>
         </div>
-        <footer className="shrink-0 border-t border-slate-200 bg-white px-4 py-2 text-center text-xs text-slate-500">
-          Demonstration only. No calls, text messages, emails, pages, or device commands leave this browser.
+        <footer className="flex shrink-0 items-center justify-center gap-3 border-t border-slate-200 bg-white px-4 py-2 text-center text-xs text-slate-500 sm:justify-between">
+          <span>Demonstration only. No calls, messages, pages, or device commands leave this browser.</span>
+          <a href="/contact" className="hidden shrink-0 font-semibold text-blue-600 hover:text-blue-700 sm:inline">
+            Talk to our team →
+          </a>
         </footer>
       </div>
     </div>

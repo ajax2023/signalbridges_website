@@ -3,24 +3,24 @@ import signalBridgeDiagram from '../assets/Signal Bridge Simple Drawing.png';
 const features = [
   {
     number: '01',
-    title: 'Two paging paths',
-    subtitle: 'LAN + cloud',
+    title: 'Connect the event',
+    subtitle: 'Many sources',
     description:
-      'RTP paging is emitted by the on-prem agent on your LAN and can run offline after initial setup. SIP paging uses Twilio and requires cloud connectivity. Routing is explicit and deterministic with tenant isolation and targeted agent selection.',
+      'Bring buttons, sensors, schedules, webhooks, SIP events, and connected systems into one operating model.',
   },
   {
     number: '02',
-    title: 'Agent as execution boundary',
-    subtitle: 'Local continuity',
+    title: 'Coordinate the response',
+    subtitle: 'Flexible Flows',
     description:
-      'The agent executes media and device actions on the LAN and provides a local UI for offline paging. Media-plane continuity is preserved even if backend or MQTT services are temporarily unavailable once sessions are established.',
+      'Use conditions, waits, decisions, acknowledgments, and escalation steps to move each event toward the right outcome.',
   },
   {
     number: '03',
-    title: 'Auditable by design',
-    subtitle: 'Clear history',
+    title: 'Act with visibility',
+    subtitle: 'Track execution',
     description:
-      'SIP paging has full lifecycle audit logs per tenant. Online actions are recorded with user, tenant, and timestamps. Offline paging events are logged locally on the agent for after-action review.',
+      'Coordinate communications and devices while surfacing delivery, failure, acknowledgment, and activity data where each channel supports it.',
   },
 ];
 
@@ -29,32 +29,30 @@ function Home() {
     <section className="space-y-8">
       <div className="space-y-4">
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-blue-600">
-          Defense-first alert delivery
+          Events → Flows → Actions
         </p>
         <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-          Reliable alerts when your community cannot afford delays.
+          From event to action. All connected.
         </h1>
         <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
           <p className="text-base leading-relaxed text-slate-700">
-            Signal Bridge™ delivers paging over two paths: LAN-based RTP via the on-prem
-            agent that continues operating offline once configured, and SIP via Twilio
-            for cloud-dependent scenarios. The agent executes media and device actions on
-            the LAN, enabling deterministic, auditable delivery even during backend or
-            MQTT outages.
+            Signal Bridge connects buttons, sensors, schedules, and external systems
+            to automated Flows that coordinate notifications, voice communications,
+            paging, and connected devices.
           </p>
         </div>
         <div className="flex flex-col gap-3 pt-1 sm:flex-row">
           <a
-            href="/contact"
+            href="/experience"
             className="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto"
           >
-            Talk to our team
+            Explore the Experience
           </a>
           <a
-            href="/product"
+            href="/contact"
             className="inline-flex w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto"
           >
-            Explore the product
+            Talk to our team
           </a>
         </div>
       </div>
@@ -65,18 +63,20 @@ function Home() {
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Architecture overview</p>
               <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
-                Cloud authorization with local execution
+                How Signal Bridge connects everything
               </h2>
             </div>
             <p className="text-base font-medium leading-relaxed text-slate-700">
-              Cloud authorization with local execution and offline-capable RTP paging.
+              Cloud orchestration coordinates events and actions; the on-premises Agent
+              reaches devices and paging endpoints on the local network.
             </p>
             <p className="text-sm leading-relaxed text-slate-600">
-              The Signal Bridge Control Plane handles identity &amp; access control, alert
-              routing, policy enforcement, and notification channels. The on‑prem agent
-              maintains LAN device connectivity and RTP paging execution, preserving
-              operations during WAN or backend outages. Integration channels include
-              webhooks, SMS, SIP, and email.
+              During normal operation, cloud services support authorization and
+              orchestration. The on-premises Agent executes supported local device actions
+              and RTP paging. When configured in advance, local RTP paging can operate
+              without Internet connectivity under supported LAN conditions; cloud
+              notifications, SIP calling, and other cloud-coordinated actions still
+              require their online services.
             </p>
           </div>
           <div className="flex min-w-0 flex-1 items-center justify-center rounded-2xl bg-[#f4f7fb] p-4 sm:p-6">
@@ -91,8 +91,8 @@ function Home() {
 
       <div>
         <div className="mb-4">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Built for continuity</p>
-          <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">Reliable delivery, clearly explained</h2>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">One connected model</p>
+          <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">Events become coordinated action</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
           {features.map((feature) => (

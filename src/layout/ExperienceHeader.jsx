@@ -12,18 +12,22 @@ const navItems = [
   { to: '/contact', label: 'Contact' },
 ];
 
-const linkClass = ({ isActive }) => [
+const linkClass = ({ isActive }, to) => [
   'rounded-md px-3 py-1.5 transition-colors',
   isActive
     ? 'bg-sky-50 text-sky-600'
-    : 'text-slate-600 hover:bg-sky-50 hover:text-sky-600',
+    : to === '/experience'
+      ? 'font-semibold text-sky-600 hover:bg-sky-50 hover:text-sky-700'
+      : 'text-slate-600 hover:bg-sky-50 hover:text-sky-600',
 ].join(' ');
 
-const mobileLinkClass = ({ isActive }) => [
+const mobileLinkClass = ({ isActive }, to) => [
   'block rounded-md px-3 py-2 text-sm transition-colors',
   isActive
     ? 'bg-sky-50 text-sky-600'
-    : 'text-slate-600 hover:bg-sky-50 hover:text-sky-600',
+    : to === '/experience'
+      ? 'font-semibold text-sky-600 hover:bg-sky-50 hover:text-sky-700'
+      : 'text-slate-600 hover:bg-sky-50 hover:text-sky-600',
 ].join(' ');
 
 function ExperienceHeader() {
@@ -46,14 +50,19 @@ function ExperienceHeader() {
           <span>
             <span className="block text-lg font-semibold tracking-tight text-slate-900">Signal Bridge™</span>
             <span className="hidden text-xs text-slate-500 sm:block">
-              Defense-first alert delivery for military, schools, and critical infrastructure
+              Connecting events, communications, and devices.
             </span>
           </span>
         </NavLink>
 
         <nav className="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Primary">
           {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to} className={linkClass} end={item.to === '/'}>
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={(state) => linkClass(state, item.to)}
+              end={item.to === '/'}
+            >
               {item.label}
             </NavLink>
           ))}
@@ -76,7 +85,7 @@ function ExperienceHeader() {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className={mobileLinkClass}
+                className={(state) => mobileLinkClass(state, item.to)}
                 end={item.to === '/'}
                 onClick={() => setMobileOpen(false)}
               >

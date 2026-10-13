@@ -229,13 +229,15 @@ describe('experience learning page', () => {
     expect(document.querySelector('.sb-learn').className).toContain('overflow-hidden');
   });
 
-  it('keeps sound off until the visitor turns it on', () => {
+  it('highlights the lede and omits demonstration controls', () => {
     renderExperience();
+    const lede = screen.getByText('Press a button and see the action it triggers.');
+    expect(lede.parentElement.className).toContain('bg-amber-50');
+    expect(lede.parentElement.className).toContain('w-full');
     fireEvent.click(screen.getByRole('button', { name: /External Events & Sensors/i }));
-    const sound = screen.getByRole('button', { name: 'Sound off' });
-    expect(sound.getAttribute('aria-pressed')).toBe('false');
-    fireEvent.click(sound);
-    expect(screen.getByRole('button', { name: 'Sound on' }).getAttribute('aria-pressed')).toBe('true');
+    expect(screen.queryByRole('region', { name: 'Demonstration controls' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Replay' })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Sound/ })).toBeNull();
   });
 });
 

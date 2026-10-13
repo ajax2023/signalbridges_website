@@ -2,11 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import EventsPanel from '../experience/EventsPanel';
 import FlowPanel from '../experience/FlowPanel';
 import ActionsPanel from '../experience/ActionsPanel';
-import ScenarioPicker from '../experience/ScenarioPicker';
 import FlowComposer from '../experience/FlowComposer';
 import LearningSidebar from '../experience/LearningSidebar';
 import { useExperienceTimeline } from '../experience/engine/useExperienceTimeline';
-import { useDemoCues } from '../experience/useDemoCues';
 import {
   buildFlowEvent,
   eventsForModule,
@@ -18,7 +16,6 @@ import '../experience/experience.css';
 function Experience() {
   const [moduleId, setModuleId] = useState('A');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [soundOn, setSoundOn] = useState(false);
   const [triggerId, setTriggerId] = useState('button');
   const [actionTypes, setActionTypes] = useState(['phone', 'sms']);
   const [composerEvent, setComposerEvent] = useState(null);
@@ -27,7 +24,7 @@ function Experience() {
 
   const module = getModule(moduleId);
   const { progress, recordCompletion, clearAll } = useLearningProgress();
-  const { state, play, replay, reset } = useExperienceTimeline();
+  const { state, play, reset } = useExperienceTimeline();
   const catalogEvents = useMemo(
     () => eventsForModule(module, 'basic-alert'),
     [module],
@@ -42,8 +39,6 @@ function Experience() {
   const completedEventIds = progress.modules[module.id]?.events || [];
   const hasAnyCompletion = Object.values(progress.modules).some((entry) => (entry?.events || []).length > 0);
   const canReset = state.status !== 'idle' || hasAnyCompletion;
-
-  useDemoCues(soundOn, selectedEvent, state);
 
   useEffect(() => {
     setComposerEvent(null);
@@ -63,12 +58,6 @@ function Experience() {
     if (!event) return;
     playModuleRef.current = moduleId;
     play(event);
-  }
-
-  function handleReplay() {
-    if (!selectedEvent || running) return;
-    playModuleRef.current = moduleId;
-    replay(selectedEvent);
   }
 
   function handleReset() {
@@ -125,15 +114,17 @@ function Experience() {
           </button>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="max-w-4xl">
+            <div className="min-w-0 flex-1">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-blue-500 text-lg font-bold text-blue-600">
                   {module.id}
                 </span>
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{module.title}</h1>
               </div>
-              <p className="mt-3 text-base text-slate-600">{module.lede}</p>
-              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-500">{module.body}</p>
+              <div className="mt-3 w-full rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 shadow-sm">
+                <p className="text-base leading-relaxed text-slate-700">{module.lede}</p>
+              </div>
+              <p className="mt-2 w-full text-sm leading-relaxed text-slate-500">{module.body}</p>
             </div>
 
             <button
@@ -193,20 +184,6 @@ function Experience() {
               }
             />
           </div>
-
-          {module.kind !== 'buttons' && (
-            <ScenarioPicker
-              title="Demonstration controls"
-              description="Replay the last event, or turn sound on. Sound stays off until you enable it."
-              scenarios={[]}
-              activeId=""
-              onChange={() => {}}
-              onReplay={handleReplay}
-              canReplay={Boolean(selectedEvent) && !running}
-              soundOn={soundOn}
-              onToggleSound={() => setSoundOn((value) => !value)}
-            />
-          )}
 
           <div role="status" className="sr-only">
             {statusText}

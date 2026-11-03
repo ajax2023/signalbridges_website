@@ -8,6 +8,8 @@ import DownloadsPage from './pages/Downloads';
 import ContactPage from './pages/Contact';
 import HelpRedirect from './pages/HelpRedirect';
 import ExperiencePage from './pages/Experience';
+import PrivacyPage from './pages/Privacy';
+import TermsPage from './pages/Terms';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/experience" element={<ExperiencePage />} />
         <Route path="/help" element={<HelpRedirect />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/tos" element={<TermsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

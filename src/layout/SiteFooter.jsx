@@ -53,8 +53,16 @@ function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-7 flex flex-col gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-7 flex flex-col gap-3 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <span>Copyright © 2026 Signal Bridge™</span>
+          <nav aria-label="Legal" className="flex flex-wrap gap-4">
+            <Link to="/privacy" className={linkClass}>
+              Privacy
+            </Link>
+            <Link to="/tos" className={linkClass}>
+              Terms
+            </Link>
+          </nav>
           <span>Built for organizations that depend on reliable communications.</span>
         </div>
       </div>

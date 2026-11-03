@@ -30,7 +30,7 @@ export default function LegalPage({ title, summary, children }) {
         aria-label="Legal pages"
         className="mt-10 flex flex-wrap gap-5 border-t border-slate-200 pt-6 text-sm text-blue-600"
       >
-        <Link to="/privacy" className="underline">
+        <Link to="/privacy-policy" className="underline">
           Privacy policy
         </Link>
         <Link to="/tos" className="underline">

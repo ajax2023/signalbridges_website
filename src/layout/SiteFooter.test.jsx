@@ -20,8 +20,17 @@ describe('site footer', () => {
     expect(
       screen.getByRole('link', { name: 'Email: admin@signalbridges.com' }).getAttribute('href'),
     ).toBe('mailto:admin@signalbridges.com');
-    expect(screen.getByRole('link', { name: 'Privacy' }).getAttribute('href')).toBe('/privacy');
-    expect(screen.getByRole('link', { name: 'Terms' }).getAttribute('href')).toBe('/tos');
+    const privacyLinks = screen.getAllByRole('link', { name: 'Privacy' });
+    const termsLinks = screen.getAllByRole('link', { name: 'Terms' });
+    expect(privacyLinks.length).toBeGreaterThanOrEqual(1);
+    expect(termsLinks.length).toBeGreaterThanOrEqual(1);
+    privacyLinks.forEach((link) => {
+      expect(link.getAttribute('href')).toBe('/privacy-policy');
+    });
+    termsLinks.forEach((link) => {
+      expect(link.getAttribute('href')).toBe('/tos');
+    });
   });
 });
+
 

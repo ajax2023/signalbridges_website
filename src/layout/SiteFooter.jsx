@@ -10,6 +10,8 @@ const exploreLinks = [
 const connectLinks = [
   { to: '/contact', label: 'Contact' },
   { to: '/downloads', label: 'Downloads' },
+  { to: '/privacy-policy', label: 'Privacy' },
+  { to: '/tos', label: 'Terms' },
 ];
 
 const linkClass =
@@ -53,16 +55,19 @@ function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-7 flex flex-col gap-3 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-7 flex flex-col gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <span>Copyright © 2026 Signal Bridge™</span>
-          <nav aria-label="Legal" className="flex flex-wrap gap-4">
-            <Link to="/privacy" className={linkClass}>
+          <span>
+            <Link to="/privacy-policy" className="underline underline-offset-2 hover:text-blue-600">
               Privacy
             </Link>
-            <Link to="/tos" className={linkClass}>
+            <span className="mx-2" aria-hidden="true">
+              ·
+            </span>
+            <Link to="/tos" className="underline underline-offset-2 hover:text-blue-600">
               Terms
             </Link>
-          </nav>
+          </span>
           <span>Built for organizations that depend on reliable communications.</span>
         </div>
       </div>

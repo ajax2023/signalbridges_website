@@ -23,7 +23,8 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/experience" element={<ExperiencePage />} />
         <Route path="/help" element={<HelpRedirect />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPage />} />
+        <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
         <Route path="/tos" element={<TermsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

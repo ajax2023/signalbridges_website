@@ -22,7 +22,7 @@ export default function Terms() {
         </p>
         <p>
           A signed customer, dealer, beta or other service agreement takes priority if it
-          conflicts with these terms. Our <Link to="/privacy">privacy policy</Link> explains
+          conflicts with these terms.           Our <Link to="/privacy-policy">privacy policy</Link> explains
           how information is handled. Contact{' '}
           <a href="mailto:ajax@online101.ca">ajax@online101.ca</a> or{' '}
           <a href="mailto:admin@signalbridges.com">admin@signalbridges.com</a> with
